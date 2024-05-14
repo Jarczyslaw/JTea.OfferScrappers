@@ -11,9 +11,9 @@ namespace JTea.OfferScrappers.Olx
             get
             {
                 var builder = new StringBuilder();
-                builder.AppendLine($"Stan: {Condition}");
-                builder.AppendLine($"Do negocjacji: {(!string.IsNullOrEmpty(ToNegotiate) ? "Tak" : "Nie")}");
-                builder.Append($"Lokalizacja: {LocationAndDate}");
+                builder.AppendLine($"State: {Condition}");
+                builder.AppendLine($"To negotiate: {(!string.IsNullOrEmpty(ToNegotiate) ? "Tak" : "Nie")}");
+                builder.Append($"Location and date: {LocationAndDate}");
 
                 return builder.ToString();
             }

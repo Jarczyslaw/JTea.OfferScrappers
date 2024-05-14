@@ -20,6 +20,8 @@ namespace JTea.OfferScrappers.Olx
 
             HtmlDocument document = GetDocument(FullOfferLink);
 
+            OffersCountText = GetOffersCountText(document);
+
             result = AppendOffersFromDocument(result, document);
 
             List<OlxOffer> limitedOffers = CheckOffersLimit(result, configuration);
@@ -67,14 +69,21 @@ namespace JTea.OfferScrappers.Olx
         {
             var offer = new OlxOffer();
 
-            HtmlNode linkNode = offerNode.Elements("a")
-                .FirstOrDefault();
+            HtmlNode offerDataNode = offerNode.Element("div")
+                ?.Element("div")
+                ?.Elements("div").Last()
+                ?.Element("div");
 
-            if (linkNode == null) { throw new ScrapperParsingException("Can not find link node in offer node"); }
+            if (offerDataNode == null) { throw new ScrapperParsingException("Can not find offer data node in offer node"); }
+
+            HtmlNode linkNode = offerDataNode
+                .Element("a");
+
+            if (linkNode == null) { throw new ScrapperParsingException("Can not find link node in offer data node"); }
 
             offer.TargetHref = CombinePaths(BaseUrl, linkNode.GetAttributeValue("href", null));
 
-            SetPriceAndToNegotiate(offer, linkNode);
+            SetPriceAndToNegotiate(offer, offerDataNode);
 
             HtmlNode headerNode = linkNode.Descendants("h6")
                 .FirstOrDefault();
@@ -120,6 +129,13 @@ namespace JTea.OfferScrappers.Olx
             return subPagesLinks;
         }
 
+        private string GetOffersCountText(HtmlDocument document)
+        {
+            return document.DocumentNode.Descendants("span")
+                .FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "total-count")
+                ?.GetDirectInnerText();
+        }
+
         private List<OlxOffer> GetOffersFromDocument(HtmlDocument document)
         {
             var offers = new List<OlxOffer>();
@@ -160,12 +176,12 @@ namespace JTea.OfferScrappers.Olx
             }
         }
 
-        private void SetPriceAndToNegotiate(OlxOffer offer, HtmlNode linkNode)
+        private void SetPriceAndToNegotiate(OlxOffer offer, HtmlNode offerDataNode)
         {
-            HtmlNode priceNode = linkNode.Descendants("p")
+            HtmlNode priceNode = offerDataNode.Elements("p")
                 .FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "ad-price");
 
-            if (priceNode == null) { return; }
+            if (priceNode == null) { throw new ScrapperParsingException("Can not find price node in offer data node"); }
 
             offer.Price = priceNode.GetDirectInnerText();
 

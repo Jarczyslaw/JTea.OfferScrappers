@@ -19,6 +19,8 @@ namespace JTea.OfferScrappers
 
         public string OfferLink { get; }
 
+        public string OffersCountText { get; set; }
+
         public static string CombinePaths(params string[] paths)
         {
             if (paths == null || paths.Length == 0) { return null; }
