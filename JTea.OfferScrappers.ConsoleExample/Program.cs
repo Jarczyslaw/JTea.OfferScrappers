@@ -4,18 +4,18 @@ using Newtonsoft.Json;
 
 namespace JTea.OfferScrappers.ConsoleExample
 {
-    internal class Program
+    internal static class Program
     {
-        private static void Main(string[] args)
+        private static void Main(string[] _)
         {
             try
             {
-                //ScrapFromOlx();
+                ScrapFromOlx();
                 ScrapFromOtoDom();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                WriteLine(ex.ToString(), ConsoleColor.Red);
             }
             Console.ReadKey();
         }
@@ -31,7 +31,7 @@ namespace JTea.OfferScrappers.ConsoleExample
 
         private static void Scrap(BaseScrapper scrapper, string fileName)
         {
-            Console.WriteLine($"Scrapping offers with {scrapper.GetType().Name} from {scrapper.FullOfferUrl}");
+            WriteLine($"Scrapping offers with {scrapper.GetType().Name} from {scrapper.FullOfferUrl}", ConsoleColor.Blue);
 
             List<Offer> result = scrapper.Scrap(new ScrapperConfiguration()
             {
@@ -41,8 +41,8 @@ namespace JTea.OfferScrappers.ConsoleExample
                 PageSourceLogPath = "C://test"
             }).Result;
 
-            Console.WriteLine($"Scrapped offers count text: {scrapper.OffersCountText}");
-            Console.WriteLine($"Scrapped {result.Count} offers");
+            WriteLine($"Scrapped offers count text: {scrapper.OffersCountText}", ConsoleColor.Green);
+            WriteLine($"Scrapped {result.Count} offers", ConsoleColor.Green);
 
             string filePath = SaveOffers(result, fileName);
             Console.WriteLine($"Offers serialized to: {filePath}");
@@ -50,8 +50,8 @@ namespace JTea.OfferScrappers.ConsoleExample
 
         private static void ScrapFromOlx()
         {
-            string baseUrl = "https://www.olx.pl/";
-            string offerUrl = "oferty/q-elitebook-830/";
+            const string baseUrl = "https://www.olx.pl/";
+            const string offerUrl = "oferty/q-elitebook-830/";
 
             BaseScrapper scrapper = new OlxScapper(baseUrl, offerUrl);
 
@@ -60,12 +60,19 @@ namespace JTea.OfferScrappers.ConsoleExample
 
         private static void ScrapFromOtoDom()
         {
-            string baseUrl = "https://www.otodom.pl/";
-            string offerUrl = "pl/wyniki/sprzedaz/mieszkanie/slaskie/katowice/katowice/katowice/brynow--osiedle-zgrzebnioka?limit=36&ownerTypeSingleSelect=ALL&areaMin=80&by=LATEST&direction=DESC";
+            const string baseUrl = "https://www.otodom.pl/";
+            const string offerUrl = "pl/wyniki/sprzedaz/mieszkanie/slaskie/katowice/katowice/katowice/brynow--osiedle-zgrzebnioka?limit=36&ownerTypeSingleSelect=ALL&areaMin=80&by=LATEST&direction=DESC";
 
             BaseScrapper scrapper = new OtoDomScapper(baseUrl, offerUrl);
 
             Scrap(scrapper, "otodom_offers");
+        }
+
+        private static void WriteLine(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ResetColor();
         }
     }
 }

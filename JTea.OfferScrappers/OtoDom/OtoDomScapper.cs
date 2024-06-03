@@ -54,7 +54,7 @@ namespace JTea.OfferScrappers.OtoDom
                 .Descendants("div")
                 ?.FirstOrDefault(x => x.GetAttributeValue("data-cy", null) == "search.listing.organic");
 
-            CheckNodeExists(offersContainerNode, nameof(offersContainerNode));
+            if (offersContainerNode == null) { return new List<Offer>(); }
 
             List<HtmlNode> offerNodes = offersContainerNode
                 ?.Elements("ul")
