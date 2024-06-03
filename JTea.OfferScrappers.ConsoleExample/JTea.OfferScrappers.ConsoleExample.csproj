@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj" />
     <ProjectReference Include="..\JTea.OfferScrappers\JTea.OfferScrappers.csproj" />
   </ItemGroup>
 

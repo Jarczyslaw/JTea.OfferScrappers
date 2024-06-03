@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JTea.OfferScrappers
+namespace JTea.OfferScrappers.Exceptions
 {
     public class ScrapperParsingException : Exception
     {

@@ -1,15 +1,26 @@
-﻿using System;
+﻿using System.Text;
 
 namespace JTea.OfferScrappers.OtoDom
 {
     public class OtoDomOffer : Offer
     {
-        public string Condition { get; set; }
+        public override string Description
+        {
+            get
+            {
+                var builder = new StringBuilder();
+                builder.AppendLine($"Location: {Location}");
+                builder.AppendLine($"Specification: {Specification}");
+                builder.AppendLine($"Is part of investment: {(IsPartOfInvestment ? "Tak" : "Nie")}");
 
-        public override string Description => throw new NotImplementedException();
+                return builder.ToString();
+            }
+        }
 
-        public string LocationAndDate { get; set; }
+        public bool IsPartOfInvestment { get; set; }
 
-        public string ToNegotiate { get; set; }
+        public string Location { get; set; }
+
+        public string Specification { get; set; }
     }
 }

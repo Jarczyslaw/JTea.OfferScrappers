@@ -4,6 +4,8 @@
     {
         public virtual string Description { get; }
 
+        public string ImageHref { get; set; }
+
         public string Price { get; set; }
 
         public string TargetHref { get; set; }
