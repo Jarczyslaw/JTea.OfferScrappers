@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using JTea.OfferScrappers.Exceptions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,7 +76,7 @@ namespace JTea.OfferScrappers
 
         protected void CheckNodeExists(HtmlNode node, string nodeName)
         {
-            if (node == null) { throw new NodeNotFoundException(nodeName); }
+            if (node == null) { throw new NodeNotExistsException(nodeName); }
         }
 
         protected List<string> CreateSubPagesUrls(int lastSubPage)
@@ -111,11 +112,12 @@ namespace JTea.OfferScrappers
 
         protected abstract List<Offer> GetOffersFromDocument(HtmlDocument document);
 
-        protected string PrepareValue(string value)
+        protected string PrepareText(string value)
         {
             if (string.IsNullOrEmpty(value)) { return value; }
 
-            return value.Replace("&nbsp;", " ");
+            return value.Replace("&nbsp;", " ")
+                .Trim();
         }
 
         private List<Offer> CheckOffersLimit(List<Offer> offers, ScrapperConfiguration configuration)

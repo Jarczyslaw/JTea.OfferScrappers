@@ -6,6 +6,11 @@ namespace JTea.OfferScrappers.OtoDom
 {
     public class OtoDomScapper : BaseScrapper
     {
+        public OtoDomScapper(string offerUrl)
+            : base("https://www.otodom.pl/", offerUrl)
+        {
+        }
+
         public OtoDomScapper(string baseUrl, string offerUrl)
             : base(baseUrl, offerUrl)
         {
@@ -15,12 +20,13 @@ namespace JTea.OfferScrappers.OtoDom
         {
             HtmlNode paginationNode = document.DocumentNode
                 .Descendants("div")
-                ?.FirstOrDefault(x => x.GetAttributeValue("data-cy", null) == "search-list-pagination");
+                .FirstOrDefault(x => x.GetAttributeValue("data-cy", null) == "search-list-pagination");
 
             if (paginationNode == null) { return new List<string>(); }
 
-            HtmlNode lastSubPageNode = paginationNode.Descendants("ul")
-                ?.FirstOrDefault()
+            HtmlNode lastSubPageNode = paginationNode
+                .Descendants("ul")
+                .FirstOrDefault()
                 ?.Descendants("li")
                 ?.LastOrDefault(x => string.IsNullOrEmpty(x.GetAttributeValue("aria-label", null)));
 
@@ -40,7 +46,7 @@ namespace JTea.OfferScrappers.OtoDom
             CheckNodeExists(searchHeadingNode, nameof(searchHeadingNode));
 
             HtmlNode totalCountNode = searchHeadingNode.ParentNode
-                ?.Element("div")
+                .Element("div")
                 ?.Element("div");
 
             CheckNodeExists(totalCountNode, nameof(totalCountNode));
@@ -52,14 +58,14 @@ namespace JTea.OfferScrappers.OtoDom
         {
             HtmlNode offersContainerNode = document.DocumentNode
                 .Descendants("div")
-                ?.FirstOrDefault(x => x.GetAttributeValue("data-cy", null) == "search.listing.organic");
+                .FirstOrDefault(x => x.GetAttributeValue("data-cy", null) == "search.listing.organic");
 
             if (offersContainerNode == null) { return new List<Offer>(); }
 
             List<HtmlNode> offerNodes = offersContainerNode
-                ?.Elements("ul")
-                ?.SelectMany(x => x.Elements("li"))
-                ?.ToList();
+                .Elements("ul")
+                .SelectMany(x => x.Elements("li"))
+                .ToList();
 
             if (offerNodes == null || offerNodes.Count == 0) { return new List<Offer>(); }
 
@@ -94,16 +100,19 @@ namespace JTea.OfferScrappers.OtoDom
 
             HtmlNode dataNode = mainSection
                 .Elements("div")
-                ?.LastOrDefault();
+                .LastOrDefault();
 
-            HtmlNode linkNode = dataNode
-                ?.Element("a");
+            HtmlNode linkNode = dataNode?.Element("a");
 
             CheckNodeExists(linkNode, nameof(linkNode));
 
             result.TargetHref = CombinePaths(BaseUrl, linkNode.GetAttributeValue("href", null));
 
-            result.Title = PrepareValue(linkNode.Element("p").GetDirectInnerText());
+            HtmlNode titleNode = linkNode.Element("p");
+
+            CheckNodeExists(titleNode, nameof(titleNode));
+
+            result.Title = PrepareText(titleNode.GetDirectInnerText());
 
             SetImageHref(result, mainSection);
 
@@ -119,44 +128,44 @@ namespace JTea.OfferScrappers.OtoDom
         private void SetImageHref(OtoDomOffer offer, HtmlNode mainSection)
         {
             offer.ImageHref = mainSection
-                ?.Descendants("img")
-                ?.FirstOrDefault()
+                .Descendants("img")
+                .FirstOrDefault()
                 ?.GetAttributeValue("src", null);
         }
 
         private void SetLocation(OtoDomOffer result, HtmlNode dataNode)
         {
             HtmlNode locationNode = dataNode
-                ?.Descendants("p")
-                ?.FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "advert-card-address");
+                .Descendants("p")
+                .FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "advert-card-address");
 
             CheckNodeExists(locationNode, nameof(locationNode));
 
-            result.Location = PrepareValue(locationNode.GetDirectInnerText());
+            result.Location = PrepareText(locationNode.GetDirectInnerText());
         }
 
         private void SetPrice(OtoDomOffer result, HtmlNode dataNode)
         {
             HtmlNode priceNode = dataNode
-                ?.Elements("div")
-                ?.Where(x => x.GetAttributeValue("data-testid", null) == "listing-item-header")
-                ?.FirstOrDefault()
+                .Elements("div")
+                .Where(x => x.GetAttributeValue("data-testid", null) == "listing-item-header")
+                .FirstOrDefault()
                 ?.Element("span");
 
             CheckNodeExists(priceNode, nameof(priceNode));
 
-            result.Price = PrepareValue(priceNode.GetDirectInnerText());
+            result.Price = PrepareText(priceNode.GetDirectInnerText());
         }
 
         private void SetSpecification(OtoDomOffer result, HtmlNode dataNode)
         {
             List<HtmlNode> specificationNodes = dataNode
-                ?.Descendants("dd")
-                ?.ToList();
+                .Descendants("dd")
+                .ToList();
 
             if (specificationNodes == null) { return; }
 
-            result.Specification = string.Join(", ", specificationNodes.Select(x => PrepareValue(x.GetDirectInnerText()?.Trim())));
+            result.Specification = string.Join(", ", specificationNodes.Select(x => PrepareText(x.GetDirectInnerText()?.Trim())));
         }
     }
 }

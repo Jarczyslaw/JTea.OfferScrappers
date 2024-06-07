@@ -1,5 +1,6 @@
 ﻿using JTea.OfferScrappers.Olx;
 using JTea.OfferScrappers.OtoDom;
+using JTea.OfferScrappers.OtoMoto;
 using Newtonsoft.Json;
 
 namespace JTea.OfferScrappers.ConsoleExample
@@ -10,8 +11,9 @@ namespace JTea.OfferScrappers.ConsoleExample
         {
             try
             {
-                ScrapFromOlx();
-                ScrapFromOtoDom();
+                //ScrapFromOlx();
+                //ScrapFromOtoDom();
+                ScrapFromOtoMoto();
             }
             catch (Exception ex)
             {
@@ -31,13 +33,13 @@ namespace JTea.OfferScrappers.ConsoleExample
 
         private static void Scrap(BaseScrapper scrapper, string fileName)
         {
-            WriteLine($"Scrapping offers with {scrapper.GetType().Name} from {scrapper.FullOfferUrl}", ConsoleColor.Blue);
+            WriteLine($"Scrapping offers with {scrapper.GetType().Name} from {scrapper.FullOfferUrl}", ConsoleColor.Cyan);
 
             List<Offer> result = scrapper.Scrap(new ScrapperConfiguration()
             {
                 DelayBetweenSubPagesChecks = TimeSpan.FromSeconds(1),
                 PageSourceProvider = new SeleniumPageSourceProvider.PageSourceProvider(true),
-                CheckSubpages = false,
+                CheckSubpages = true,
                 PageSourceLogPath = "C://test"
             }).Result;
 
@@ -50,22 +52,29 @@ namespace JTea.OfferScrappers.ConsoleExample
 
         private static void ScrapFromOlx()
         {
-            const string baseUrl = "https://www.olx.pl/";
             const string offerUrl = "oferty/q-elitebook-830/";
 
-            BaseScrapper scrapper = new OlxScapper(baseUrl, offerUrl);
+            BaseScrapper scrapper = new OlxScapper(offerUrl);
 
             Scrap(scrapper, "olx_offers");
         }
 
         private static void ScrapFromOtoDom()
         {
-            const string baseUrl = "https://www.otodom.pl/";
             const string offerUrl = "pl/wyniki/sprzedaz/mieszkanie/slaskie/katowice/katowice/katowice/brynow--osiedle-zgrzebnioka?limit=36&ownerTypeSingleSelect=ALL&areaMin=80&by=LATEST&direction=DESC";
 
-            BaseScrapper scrapper = new OtoDomScapper(baseUrl, offerUrl);
+            BaseScrapper scrapper = new OtoDomScapper(offerUrl);
 
             Scrap(scrapper, "otodom_offers");
+        }
+
+        private static void ScrapFromOtoMoto()
+        {
+            const string offerUrl = "osobowe/honda/civic/od-2023";
+
+            BaseScrapper scrapper = new OtoMotoScrapper(offerUrl);
+
+            Scrap(scrapper, "otomoto_offers");
         }
 
         private static void WriteLine(string text, ConsoleColor color)

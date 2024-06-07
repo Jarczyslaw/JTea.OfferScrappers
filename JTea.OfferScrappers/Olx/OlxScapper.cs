@@ -6,6 +6,11 @@ namespace JTea.OfferScrappers.Olx
 {
     public class OlxScapper : BaseScrapper
     {
+        public OlxScapper(string offerUrl)
+            : base("https://www.olx.pl/", offerUrl)
+        {
+        }
+
         public OlxScapper(string baseUrl, string offerUrl)
             : base(baseUrl, offerUrl)
         {
@@ -13,13 +18,15 @@ namespace JTea.OfferScrappers.Olx
 
         protected override List<string> GetOfferAdditionalUrls(HtmlDocument document)
         {
-            HtmlNode paginationListNode = document.DocumentNode.Descendants("ul")
-               .FirstOrDefault(x => x.HasClass("pagination-list"));
+            HtmlNode paginationListNode = document.DocumentNode
+                .Descendants("ul")
+                .FirstOrDefault(x => x.HasClass("pagination-list"));
 
             if (paginationListNode == null) { return new List<string>(); }
 
-            HtmlNode lastSubPageNode = paginationListNode.Descendants("a")
-                ?.LastOrDefault(x => x.ParentNode.Name == "li");
+            HtmlNode lastSubPageNode = paginationListNode
+                .Descendants("a")
+                .LastOrDefault(x => x.ParentNode.Name == "li");
 
             CheckNodeExists(lastSubPageNode, nameof(lastSubPageNode));
 
@@ -32,7 +39,7 @@ namespace JTea.OfferScrappers.Olx
         {
             HtmlNode totalCountNode = document.DocumentNode
                 .Descendants("span")
-                ?.FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "total-count");
+                .FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "total-count");
 
             CheckNodeExists(totalCountNode, nameof(totalCountNode));
 
@@ -45,8 +52,8 @@ namespace JTea.OfferScrappers.Olx
 
             List<HtmlNode> offerNodes = document.DocumentNode
                 .Descendants("div")
-                ?.Where(x => x.GetAttributeValue("data-testid", null) == "l-card")
-                ?.ToList();
+                .Where(x => x.GetAttributeValue("data-testid", null) == "l-card")
+                .ToList();
 
             if (offerNodes == null || offerNodes.Count == 0) { return new List<Offer>(); }
 
@@ -63,7 +70,8 @@ namespace JTea.OfferScrappers.Olx
         {
             var offer = new OlxOffer();
 
-            HtmlNode offerDataNode = offerNode.Element("div")
+            HtmlNode offerDataNode = offerNode
+                .Element("div")
                 ?.Element("div")
                 ?.Elements("div")
                 ?.LastOrDefault()
@@ -72,7 +80,7 @@ namespace JTea.OfferScrappers.Olx
             CheckNodeExists(offerDataNode, nameof(offerDataNode));
 
             HtmlNode linkNode = offerDataNode
-                ?.Element("a");
+                .Element("a");
 
             CheckNodeExists(linkNode, nameof(linkNode));
 
@@ -80,22 +88,23 @@ namespace JTea.OfferScrappers.Olx
 
             SetPriceAndToNegotiate(offer, offerDataNode);
 
-            HtmlNode headerNode = linkNode.Descendants("h6")
+            HtmlNode headerNode = linkNode
+                .Descendants("h6")
                 .FirstOrDefault();
 
             CheckNodeExists(headerNode, nameof(headerNode));
 
-            offer.Title = PrepareValue(headerNode.InnerText);
+            offer.Title = PrepareText(headerNode.InnerText);
 
             SetCondition(offer, offerNode);
 
             HtmlNode locationAndDateNode = offerNode
                 .Descendants("p")
-                ?.FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "location-date");
+                .FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "location-date");
 
             CheckNodeExists(locationAndDateNode, nameof(locationAndDateNode));
 
-            offer.LocationAndDate = PrepareValue(locationAndDateNode.GetDirectInnerText());
+            offer.LocationAndDate = PrepareText(locationAndDateNode.GetDirectInnerText());
 
             SetImage(offer, offerNode);
 
@@ -110,21 +119,21 @@ namespace JTea.OfferScrappers.Olx
             string newCondition = "Nowe";
             if (spanNodes.Any(x => x.GetAttributeValue("title", null) == newCondition))
             {
-                offer.Condition = PrepareValue(newCondition);
+                offer.Condition = PrepareText(newCondition);
                 return;
             }
 
             string usedCondition = "Używane";
             if (spanNodes.Any(x => x.GetAttributeValue("title", null) == usedCondition))
             {
-                offer.Condition = PrepareValue(usedCondition);
+                offer.Condition = PrepareText(usedCondition);
             }
         }
 
         private void SetImage(OlxOffer offer, HtmlNode offerNode)
         {
             HtmlNode imageNode = offerNode
-                ?.Element("div")
+                .Element("div")
                 ?.Element("div")
                 ?.Elements("div")
                 ?.First()
@@ -144,7 +153,7 @@ namespace JTea.OfferScrappers.Olx
 
             CheckNodeExists(priceNode, nameof(priceNode));
 
-            offer.Price = PrepareValue(priceNode.GetDirectInnerText());
+            offer.Price = PrepareText(priceNode.GetDirectInnerText());
 
             HtmlNode spanChild = priceNode
                 .Elements("span")
@@ -152,7 +161,7 @@ namespace JTea.OfferScrappers.Olx
 
             if (spanChild == null) { return; }
 
-            offer.ToNegotiate = PrepareValue(spanChild.GetDirectInnerText());
+            offer.ToNegotiate = PrepareText(spanChild.GetDirectInnerText());
         }
     }
 }
