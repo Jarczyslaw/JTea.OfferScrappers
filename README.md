@@ -12,4 +12,4 @@ Projekt w trakcie budowy!
 
 Docelowo projekt ma zawierać kompletną bibliotekę, która umożliwia pobieranie ofert, aplikację konsolową w ramach przykładu oraz usługę windowsową, która cyklicznie będzie sprawdzać zdefiniowane oferty i wysyłać powiadomienia jeśli pojawią się jakieś zmiany. 
 
-Tylko do celów edukacyjnych! Nie ponoszę odpowiedzialności za niewłaściwe lub nieetyczne używanie tej biblioteki!
+**Tylko do celów edukacyjnych! Nie ponoszę odpowiedzialności za niewłaściwe lub nieetyczne używanie tej biblioteki!**
