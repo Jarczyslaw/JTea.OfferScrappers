@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers", "JTea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.ConsoleExample", "JTea.OfferScrappers.ConsoleExample\JTea.OfferScrappers.ConsoleExample.csproj", "{0C782A68-6E6E-4EAC-9C65-2BA49F5D126F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JTea.OfferScrappers.Abstraction", "JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj", "{2DD5EF60-3F7A-4125-9E98-C8598427D713}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Abstraction", "JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj", "{2DD5EF60-3F7A-4125-9E98-C8598427D713}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JTea.OfferScrappers.SeleniumPageSourceProvider", "JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj", "{A24ED54C-B1F0-4117-B16C-D250B4A738E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.SeleniumPageSourceProvider", "JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj", "{A24ED54C-B1F0-4117-B16C-D250B4A738E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

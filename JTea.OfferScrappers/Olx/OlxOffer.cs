@@ -19,6 +19,10 @@ namespace JTea.OfferScrappers.Olx
             }
         }
 
+        public override bool IsValid
+            => base.IsValid
+                && !string.IsNullOrEmpty(LocationAndDate);
+
         public string LocationAndDate { get; set; }
 
         public string ToNegotiate { get; set; }

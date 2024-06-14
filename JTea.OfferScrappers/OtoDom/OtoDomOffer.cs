@@ -19,6 +19,10 @@ namespace JTea.OfferScrappers.OtoDom
 
         public bool IsPartOfInvestment { get; set; }
 
+        public override bool IsValid
+            => base.IsValid
+                && !string.IsNullOrEmpty(Location);
+
         public string Location { get; set; }
 
         public string Specification { get; set; }

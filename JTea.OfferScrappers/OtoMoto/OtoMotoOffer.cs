@@ -19,6 +19,10 @@ namespace JTea.OfferScrappers.OtoMoto
 
         public string Features { get; set; }
 
+        public override bool IsValid
+            => base.IsValid
+                && !string.IsNullOrEmpty(Specification);
+
         public string LocationAndDate { get; set; }
 
         public string Specification { get; set; }

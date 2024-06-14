@@ -25,7 +25,7 @@ namespace JTea.OfferScrappers.SeleniumPageSourceProvider
 
                 await ScrollStepByStep(driver);
 
-                return (string)driver.ExecuteScript($"return document.documentElement.outerHTML");
+                return (string)driver.ExecuteScript("return document.documentElement.outerHTML");
             }
         }
 
