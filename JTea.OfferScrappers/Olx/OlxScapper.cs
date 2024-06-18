@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace JTea.OfferScrappers.Olx
 {
-    public class OlxScapper : BaseScrapper
+    public class OlxScapper : Scrapper
     {
         public OlxScapper(string offerUrl)
             : base("https://www.olx.pl/", offerUrl)
@@ -116,17 +116,20 @@ namespace JTea.OfferScrappers.Olx
             IEnumerable<HtmlNode> spanNodes = linkNode
                 .Descendants("span");
 
-            string newCondition = "Nowe";
-            if (spanNodes.Any(x => x.GetAttributeValue("title", null) == newCondition))
+            List<string> conditions = new List<string>
             {
-                offer.Condition = PrepareText(newCondition);
-                return;
-            }
+                "Nowe",
+                "Używane",
+                "Uszkodzone"
+            };
 
-            string usedCondition = "Używane";
-            if (spanNodes.Any(x => x.GetAttributeValue("title", null) == usedCondition))
+            foreach (string condition in conditions)
             {
-                offer.Condition = PrepareText(usedCondition);
+                if (spanNodes.Any(x => x.GetAttributeValue("title", null) == condition))
+                {
+                    offer.Condition = PrepareText(condition);
+                    return;
+                }
             }
         }
 

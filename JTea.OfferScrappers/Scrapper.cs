@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace JTea.OfferScrappers
 {
-    public abstract class BaseScrapper
+    public abstract class Scrapper
     {
-        protected BaseScrapper(string baseUrl, string offerUrl)
+        protected Scrapper(string baseUrl, string offerUrl)
         {
             BaseUrl = baseUrl;
             OfferUrl = offerUrl;

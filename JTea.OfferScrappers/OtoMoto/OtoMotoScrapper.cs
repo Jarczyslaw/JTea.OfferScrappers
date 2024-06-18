@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace JTea.OfferScrappers.OtoMoto
 {
-    public class OtoMotoScrapper : BaseScrapper
+    public class OtoMotoScrapper : Scrapper
     {
         public OtoMotoScrapper(string offerUrl)
             : base("https://www.otomoto.pl/", offerUrl)
@@ -45,6 +45,8 @@ namespace JTea.OfferScrappers.OtoMoto
                 ?.Element("div")
                 ?.Element("p");
 
+            if (totalCountNode == null) { return null; }
+
             return PrepareText(totalCountNode.InnerText);
         }
 
@@ -76,13 +78,6 @@ namespace JTea.OfferScrappers.OtoMoto
             return offers;
         }
 
-        private HtmlNode GetByIndexOrDefault(List<HtmlNode> nodes, int index)
-        {
-            if (index >= nodes.Count) { return null; }
-
-            return nodes[index];
-        }
-
         private Offer GetOfferFromNode(HtmlNode offerNode)
         {
             var result = new OtoMotoOffer();
@@ -97,7 +92,7 @@ namespace JTea.OfferScrappers.OtoMoto
                 .Elements("div")
                 .ToList();
 
-            HtmlNode linkDivNode = GetByIndexOrDefault(divNodes, 1);
+            HtmlNode linkDivNode = divNodes.ElementAtOrDefault(1);
 
             CheckNodeExists(linkDivNode, nameof(linkDivNode));
 
@@ -116,7 +111,7 @@ namespace JTea.OfferScrappers.OtoMoto
 
         private void SetFeaturesLocationAndDate(OtoMotoOffer offer, List<HtmlNode> divNodes)
         {
-            HtmlNode featureDivNode = GetByIndexOrDefault(divNodes, 2);
+            HtmlNode featureDivNode = divNodes.ElementAtOrDefault(2);
 
             CheckNodeExists(featureDivNode, nameof(featureDivNode));
 
@@ -124,14 +119,14 @@ namespace JTea.OfferScrappers.OtoMoto
                 .Elements("dl")
                 .ToList();
 
-            HtmlNode featureNode = GetByIndexOrDefault(dlNodes, 0);
+            HtmlNode featureNode = dlNodes.ElementAtOrDefault(0);
 
             if (featureNode == null) { return; }
 
             offer.Features = string.Join(", ",
                 featureNode.Elements("dd").Select(x => PrepareText(x.GetDirectInnerText())));
 
-            HtmlNode locationAndDateNode = GetByIndexOrDefault(dlNodes, 1);
+            HtmlNode locationAndDateNode = dlNodes.ElementAtOrDefault(1);
 
             if (featureNode == null) { return; }
 
@@ -141,7 +136,7 @@ namespace JTea.OfferScrappers.OtoMoto
 
         private void SetImageHref(OtoMotoOffer offer, List<HtmlNode> divNodes)
         {
-            HtmlNode imageDivNode = GetByIndexOrDefault(divNodes, 0);
+            HtmlNode imageDivNode = divNodes.ElementAtOrDefault(0);
 
             CheckNodeExists(imageDivNode, nameof(imageDivNode));
 
@@ -153,7 +148,7 @@ namespace JTea.OfferScrappers.OtoMoto
 
         private void SetPrice(OtoMotoOffer offer, List<HtmlNode> divNodes)
         {
-            HtmlNode priceDivNode = GetByIndexOrDefault(divNodes, 3);
+            HtmlNode priceDivNode = divNodes.ElementAtOrDefault(3);
 
             CheckNodeExists(priceDivNode, nameof(priceDivNode));
 

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace JTea.OfferScrappers.OtoDom
 {
-    public class OtoDomScapper : BaseScrapper
+    public class OtoDomScapper : Scrapper
     {
         public OtoDomScapper(string offerUrl)
             : base("https://www.otodom.pl/", offerUrl)
@@ -30,7 +30,7 @@ namespace JTea.OfferScrappers.OtoDom
                 ?.Descendants("li")
                 ?.LastOrDefault(x => string.IsNullOrEmpty(x.GetAttributeValue("aria-label", null)));
 
-            CheckNodeExists(lastSubPageNode, nameof(lastSubPageNode));
+            if (lastSubPageNode == null) { return new List<string>(); }
 
             int lastSubPage = int.Parse(lastSubPageNode.GetDirectInnerText());
 
@@ -136,8 +136,10 @@ namespace JTea.OfferScrappers.OtoDom
         private void SetLocation(OtoDomOffer result, HtmlNode dataNode)
         {
             HtmlNode locationNode = dataNode
-                .Descendants("p")
-                .FirstOrDefault(x => x.GetAttributeValue("data-testid", null) == "advert-card-address");
+                .Elements("div")
+                .ToList()
+                .ElementAtOrDefault(1)
+                ?.Element("p");
 
             CheckNodeExists(locationNode, nameof(locationNode));
 
@@ -147,9 +149,7 @@ namespace JTea.OfferScrappers.OtoDom
         private void SetPrice(OtoDomOffer result, HtmlNode dataNode)
         {
             HtmlNode priceNode = dataNode
-                .Elements("div")
-                .Where(x => x.GetAttributeValue("data-testid", null) == "listing-item-header")
-                .FirstOrDefault()
+                .Element("div")
                 ?.Element("span");
 
             CheckNodeExists(priceNode, nameof(priceNode));

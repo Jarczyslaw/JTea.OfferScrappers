@@ -12,8 +12,8 @@ namespace JTea.OfferScrappers.ConsoleExample
             try
             {
                 await ScrapFromOlx();
-                //ScrapFromOtoDom();
-                //ScrapFromOtoMoto();
+                await ScrapFromOtoDom();
+                await ScrapFromOtoMoto();
             }
             catch (Exception ex)
             {
@@ -31,7 +31,7 @@ namespace JTea.OfferScrappers.ConsoleExample
             return filePath;
         }
 
-        private static async Task Scrap(BaseScrapper scrapper, string fileName)
+        private static async Task Scrap(Scrapper scrapper, string fileName)
         {
             WriteLine($"Scrapping offers with {scrapper.GetType().Name} from {scrapper.FullOfferUrl}", ConsoleColor.Cyan);
 
@@ -46,9 +46,9 @@ namespace JTea.OfferScrappers.ConsoleExample
             WriteLine($"Scrapped offers count text: {scrapper.OffersCountText}", ConsoleColor.Green);
             WriteLine($"Scrapped offers: {result.Count}", ConsoleColor.Green);
 
-            int invalidOffersCount = result.Count(x => !x.IsValid);
-            WriteLine($"Invalid offers count: {invalidOffersCount}",
-                invalidOffersCount == 0 ? ConsoleColor.Green : ConsoleColor.Red);
+            IEnumerable<Offer> invalidOffers = result.Where(x => !x.IsValid);
+            WriteLine($"Invalid offers count: {invalidOffers.Count()}",
+                !invalidOffers.Any() ? ConsoleColor.Green : ConsoleColor.Red);
 
             string filePath = SaveOffers(result, fileName);
             Console.WriteLine($"Offers serialized to: {filePath}");
@@ -56,27 +56,31 @@ namespace JTea.OfferScrappers.ConsoleExample
 
         private static Task ScrapFromOlx()
         {
-            const string offerUrl = "oferty/q-elitebook-830/";
+            const string offerUrl = "oferty/q-elitebook-8470p/";
 
-            BaseScrapper scrapper = new OlxScapper(offerUrl);
+            Scrapper scrapper = new OlxScapper(offerUrl);
 
             return Scrap(scrapper, "olx_offers");
         }
 
         private static Task ScrapFromOtoDom()
         {
-            const string offerUrl = "pl/wyniki/sprzedaz/mieszkanie/slaskie/katowice/katowice/katowice/brynow--osiedle-zgrzebnioka?limit=36&ownerTypeSingleSelect=ALL&areaMin=80&by=LATEST&direction=DESC";
+            // no results
+            //const string offerUrl = "pl/wyniki/sprzedaz/mieszkanie/wiele-lokalizacji?limit=36&ownerTypeSingleSelect=ALL&areaMin=1000000&locations=%5Bslaskie%2Fkatowice%2Fkatowice%2Fkatowice%2Fbrynow--osiedle-zgrzebnioka%2Cslaskie%2Fkatowice%2Fkatowice%2Fkatowice%2Cslaskie%5D&by=DEFAULT&direction=DESC&viewType=listing";
+            const string offerUrl = "pl/wyniki/sprzedaz/mieszkanie/slaskie/katowice/katowice/katowice/brynow--osiedle-zgrzebnioka?limit=36&ownerTypeSingleSelect=ALL&areaMin=80&by=DEFAULT&direction=DESC&viewType=listing";
 
-            BaseScrapper scrapper = new OtoDomScapper(offerUrl);
+            Scrapper scrapper = new OtoDomScapper(offerUrl);
 
             return Scrap(scrapper, "otodom_offers");
         }
 
         private static Task ScrapFromOtoMoto()
         {
+            // no results
+            //const string offerUrl = "osobowe/honda/accord/seg-cabrio/od-2024?search%5Bfilter_float_price%3Ato%5D=50000";
             const string offerUrl = "osobowe/honda/civic/od-2023";
 
-            BaseScrapper scrapper = new OtoMotoScrapper(offerUrl);
+            Scrapper scrapper = new OtoMotoScrapper(offerUrl);
 
             return Scrap(scrapper, "otomoto_offers");
         }

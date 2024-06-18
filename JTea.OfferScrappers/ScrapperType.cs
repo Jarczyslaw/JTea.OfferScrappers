@@ -1,6 +1,6 @@
 ﻿namespace JTea.OfferScrappers
 {
-    public enum ScrapperTypes
+    public enum ScrapperType
     {
         Olx,
         OtoDom,
