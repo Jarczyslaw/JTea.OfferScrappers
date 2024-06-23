@@ -5,11 +5,17 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers", "JTea.OfferScrappers\JTea.OfferScrappers.csproj", "{BB7FBA75-3313-4979-95A0-1D5D89C366E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.ConsoleExample", "JTea.OfferScrappers.ConsoleExample\JTea.OfferScrappers.ConsoleExample.csproj", "{0C782A68-6E6E-4EAC-9C65-2BA49F5D126F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Abstraction", "JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj", "{2DD5EF60-3F7A-4125-9E98-C8598427D713}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.SeleniumPageSourceProvider", "JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj", "{A24ED54C-B1F0-4117-B16C-D250B4A738E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{0E875540-5958-4E35-A22D-8F368D8D9852}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.ConsoleExample", "Apps\JTea.OfferScrappers.ConsoleExample\JTea.OfferScrappers.ConsoleExample.csproj", "{55F40EB0-19A9-4784-B63D-DF7D3AB5F3B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WindowsService", "WindowsService", "{00E1F6A4-D143-4BD7-9F7D-C373EECB0A58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JTea.OfferScrappers.WindowsService", "Apps\JTea.OfferScrappers.WindowsService\JTea.OfferScrappers.WindowsService.csproj", "{D5B0696E-2B7C-4680-8DD4-6704F5F5FE03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +27,6 @@ Global
 		{BB7FBA75-3313-4979-95A0-1D5D89C366E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB7FBA75-3313-4979-95A0-1D5D89C366E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB7FBA75-3313-4979-95A0-1D5D89C366E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C782A68-6E6E-4EAC-9C65-2BA49F5D126F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C782A68-6E6E-4EAC-9C65-2BA49F5D126F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C782A68-6E6E-4EAC-9C65-2BA49F5D126F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C782A68-6E6E-4EAC-9C65-2BA49F5D126F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DD5EF60-3F7A-4125-9E98-C8598427D713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DD5EF60-3F7A-4125-9E98-C8598427D713}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DD5EF60-3F7A-4125-9E98-C8598427D713}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,9 +35,22 @@ Global
 		{A24ED54C-B1F0-4117-B16C-D250B4A738E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A24ED54C-B1F0-4117-B16C-D250B4A738E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A24ED54C-B1F0-4117-B16C-D250B4A738E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F40EB0-19A9-4784-B63D-DF7D3AB5F3B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F40EB0-19A9-4784-B63D-DF7D3AB5F3B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F40EB0-19A9-4784-B63D-DF7D3AB5F3B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F40EB0-19A9-4784-B63D-DF7D3AB5F3B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5B0696E-2B7C-4680-8DD4-6704F5F5FE03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B0696E-2B7C-4680-8DD4-6704F5F5FE03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5B0696E-2B7C-4680-8DD4-6704F5F5FE03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5B0696E-2B7C-4680-8DD4-6704F5F5FE03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{55F40EB0-19A9-4784-B63D-DF7D3AB5F3B7} = {0E875540-5958-4E35-A22D-8F368D8D9852}
+		{00E1F6A4-D143-4BD7-9F7D-C373EECB0A58} = {0E875540-5958-4E35-A22D-8F368D8D9852}
+		{D5B0696E-2B7C-4680-8DD4-6704F5F5FE03} = {0E875540-5958-4E35-A22D-8F368D8D9852}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FD8C01E-E34A-4FFD-9ACB-1B2573212121}
