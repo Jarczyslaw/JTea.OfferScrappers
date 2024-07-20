@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj" />
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers\JTea.OfferScrappers.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Persistence.Abstraction\JTea.OfferScrappers.WindowsService.Persistence.Abstraction.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Persistence\JTea.OfferScrappers.WindowsService.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
