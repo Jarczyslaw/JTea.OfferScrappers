@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Quartz;
 using Quartz.Spi;
 
@@ -150,7 +152,12 @@ namespace JTea.OfferScrappers.WindowsService
             builder.WebHost.UseUrls(_globalSettingsProvider.Settings.ApiAddress);
 
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(x =>
+                {
+                    x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
