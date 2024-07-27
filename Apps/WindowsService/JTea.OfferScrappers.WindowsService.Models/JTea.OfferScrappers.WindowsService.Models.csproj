@@ -6,8 +6,4 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Models\JTea.OfferScrappers.WindowsService.Models.csproj" />
-  </ItemGroup>
-
 </Project>

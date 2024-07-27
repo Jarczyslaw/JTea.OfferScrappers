@@ -1,7 +1,7 @@
 @HostAddress = http://localhost:5000/api
 
-GET {{HostAddress}}/control/ping/
+GET {{HostAddress}}/configuration/ping/
 
 ###
 
-POST {{HostAddress}}/control/startNow/
+POST {{HostAddress}}/configuration/startNow/

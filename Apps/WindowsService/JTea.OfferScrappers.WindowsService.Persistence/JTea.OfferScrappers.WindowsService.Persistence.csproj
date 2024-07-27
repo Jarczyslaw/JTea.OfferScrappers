@@ -3,11 +3,26 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="sqlite-net-sqlcipher" Version="1.9.172" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Models\JTea.OfferScrappers.WindowsService.Models.csproj" />
     <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Persistence.Abstraction\JTea.OfferScrappers.WindowsService.Persistence.Abstraction.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="JToolbox.DataAccess.Common">
+      <HintPath>..\..\Libraries\JToolbox.DataAccess.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="JToolbox.DataAccess.SQLiteNet">
+      <HintPath>..\..\Libraries\JToolbox.DataAccess.SQLiteNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

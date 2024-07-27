@@ -1,4 +1,4 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Settings
+﻿namespace JTea.OfferScrappers.WindowsService.Abstraction.Models
 {
     public class GlobalSettings
     {

@@ -1,4 +1,5 @@
 ﻿using JToolbox.Core.Abstraction;
+using JToolbox.Misc.QuartzScheduling;
 using Quartz;
 
 namespace JTea.OfferScrappers.WindowsService.Scheduling
@@ -11,12 +12,18 @@ namespace JTea.OfferScrappers.WindowsService.Scheduling
         public MainJob(ILoggerService loggerService)
         {
             _loggerService = loggerService;
-
-            _loggerService.Info($"{nameof(MainJob)} initialized properly");
         }
 
         public Task Execute(IJobExecutionContext context)
         {
+            try
+            {
+                if (QuartzExtensions.IsMisfired(context)) { return Task.CompletedTask; }
+            }
+            catch (Exception ex)
+            {
+                _loggerService.Error(ex, "MainJob failed to execute");
+            }
             return Task.CompletedTask;
         }
     }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using JTea.OfferScrappers.WindowsService.Abstraction.Models;
+using JTea.OfferScrappers.WindowsService.Abstraction.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace JTea.OfferScrappers.WindowsService.Settings
 {
