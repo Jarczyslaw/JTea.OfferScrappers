@@ -1,11 +1,15 @@
-﻿using JTea.OfferScrappers.WindowsService.Abstraction.Services;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using JTea.OfferScrappers.WindowsService.Abstraction.Services;
 using JTea.OfferScrappers.WindowsService.Core.Services;
 using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Persistence;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Repositories;
+using JTea.OfferScrappers.WindowsService.Requests;
 using JTea.OfferScrappers.WindowsService.Scheduling;
 using JTea.OfferScrappers.WindowsService.Settings;
+using JTea.OfferScrappers.WindowsService.Validators;
 using JToolbox.Core.Abstraction;
 using JToolbox.DataAccess.SQLiteNet;
 using JToolbox.Misc.Logging;
@@ -13,6 +17,7 @@ using JToolbox.Misc.TopshelfUtils;
 using MapsterMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -151,6 +156,9 @@ namespace JTea.OfferScrappers.WindowsService
 
             builder.WebHost.UseUrls(_globalSettingsProvider.Settings.ApiAddress);
 
+            // Needed to override default model validation handling
+            builder.Services.Configure<ApiBehaviorOptions>(x => x.SuppressModelStateInvalidFilter = true);
+
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddControllers()
                 .AddNewtonsoftJson(x =>
@@ -160,6 +168,10 @@ namespace JTea.OfferScrappers.WindowsService
                 });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddFluentValidationAutoValidation();
+
+            RegisterValidators(builder.Services);
 
             InitializeServices(builder.Services);
 
@@ -180,6 +192,11 @@ namespace JTea.OfferScrappers.WindowsService
             app.Start();
 
             _webApplication = app;
+        }
+
+        private void RegisterValidators(IServiceCollection services)
+        {
+            services.AddScoped<IValidator<UpdateConfigurationRequest>, UpdateConfigurationRequestValidator>();
         }
 
         private void LogInfo(string message)

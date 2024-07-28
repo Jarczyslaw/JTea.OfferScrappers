@@ -9,7 +9,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ConfigurationController : ControllerBase
+    public class ConfigurationController : BaseController
     {
         private readonly IConfigurationService _configurationService;
         private readonly IMapper _mapper;
@@ -44,6 +44,8 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateConfiguration([FromBody] UpdateConfigurationRequest request)
         {
+            CheckModel();
+
             Configuration configuration = _mapper.Map<Configuration>(request);
             await _configurationService.UpdateConfiguration(configuration);
 

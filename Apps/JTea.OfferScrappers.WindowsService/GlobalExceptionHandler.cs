@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using JTea.OfferScrappers.WindowsService.Abstraction.Exceptions;
+using JToolbox.Core.Abstraction;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
@@ -8,11 +10,15 @@ namespace JTea.OfferScrappers.WindowsService
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {
+        private readonly ILoggerService _loggerService;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public GlobalExceptionHandler(IWebHostEnvironment webHostEnvironment)
+        public GlobalExceptionHandler(
+            IWebHostEnvironment webHostEnvironment,
+            ILoggerService loggerService)
         {
             _webHostEnvironment = webHostEnvironment;
+            _loggerService = loggerService;
         }
 
         public async ValueTask<bool> TryHandleAsync(
@@ -20,13 +26,22 @@ namespace JTea.OfferScrappers.WindowsService
             Exception exception,
             CancellationToken cancellationToken)
         {
-            httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             httpContext.Response.ContentType = "application/json";
 
-            var error = new
+            if (exception.GetType().IsAssignableTo(typeof(DefinedException)))
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                _loggerService.Error(exception, "Unhandled exception");
+            }
+
+            var error = new RequestError()
             {
                 Type = exception.GetType().Name,
-                exception.Message,
+                Message = exception.Message,
                 StackTrace = _webHostEnvironment.EnvironmentName == Environments.Development
                     ? exception.StackTrace
                     : string.Empty
@@ -34,6 +49,15 @@ namespace JTea.OfferScrappers.WindowsService
 
             await httpContext.Response.WriteAsJsonAsync(error, cancellationToken);
             return true;
+        }
+
+        private class RequestError
+        {
+            public string Message { get; set; }
+
+            public string StackTrace { get; set; }
+
+            public string Type { get; set; }
         }
     }
 }
