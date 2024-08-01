@@ -7,5 +7,9 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Entities
     public class ConfigurationEntity : BaseEntity
     {
         public string CronExpression { get; set; }
+
+        public TimeSpan DelayBetweenOffersChecks { get; set; }
+
+        public TimeSpan DelayBetweenSubPagesChecks { get; set; }
     }
 }

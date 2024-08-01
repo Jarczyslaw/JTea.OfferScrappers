@@ -1,4 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Abstraction.Exceptions;
+﻿using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JToolbox.Core.Abstraction;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;

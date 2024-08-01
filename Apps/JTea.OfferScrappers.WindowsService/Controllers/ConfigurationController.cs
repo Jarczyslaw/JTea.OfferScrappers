@@ -1,5 +1,5 @@
 ﻿using JTea.OfferScrappers.WindowsService.Core.Services;
-using JTea.OfferScrappers.WindowsService.Models;
+using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Requests;
 using JTea.OfferScrappers.WindowsService.Responses;
 using MapsterMapper;
@@ -25,7 +25,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpGet]
         public ActionResult<GetConfigurationResponse> GetConfiguration()
         {
-            Configuration configuration = _configurationService.GetConfiguration();
+            ConfigurationModel configuration = _configurationService.GetConfiguration();
 
             return Ok(_mapper.Map<GetConfigurationResponse>(configuration));
         }
@@ -46,7 +46,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         {
             CheckModel();
 
-            Configuration configuration = _mapper.Map<Configuration>(request);
+            ConfigurationModel configuration = _mapper.Map<ConfigurationModel>(request);
             await _configurationService.UpdateConfiguration(configuration);
 
             return Ok();

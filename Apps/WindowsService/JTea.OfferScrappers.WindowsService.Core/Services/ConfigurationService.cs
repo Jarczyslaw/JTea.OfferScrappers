@@ -1,6 +1,6 @@
-﻿using JTea.OfferScrappers.WindowsService.Abstraction.Exceptions;
-using JTea.OfferScrappers.WindowsService.Abstraction.Services;
-using JTea.OfferScrappers.WindowsService.Models;
+﻿using JTea.OfferScrappers.WindowsService.Abstraction.Services;
+using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JToolbox.Core.Abstraction;
 using MapsterMapper;
@@ -27,17 +27,17 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
             _configurationRepository = configurationRepository;
         }
 
-        public Configuration GetConfiguration() => _configurationRepository.GetConfiguration();
+        public ConfigurationModel GetConfiguration() => _configurationRepository.GetConfiguration();
 
         public Task StartNow() => _schedulingService.StartNow();
 
-        public async Task UpdateConfiguration(Configuration newConfiguration)
+        public async Task UpdateConfiguration(ConfigurationModel newConfiguration)
         {
             try
             {
                 await _configurationSemaphore.WaitAsync();
 
-                Configuration existingConfiguration = _configurationRepository.GetConfiguration();
+                ConfigurationModel existingConfiguration = _configurationRepository.GetConfiguration();
 
                 bool rescheduleRequired = false;
                 if (existingConfiguration.CronExpression != newConfiguration.CronExpression)

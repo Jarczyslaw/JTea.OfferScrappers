@@ -1,4 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Abstraction.Exceptions;
+﻿using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 
 namespace JTea.OfferScrappers.WindowsService.Exceptions
 {

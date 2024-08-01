@@ -2,7 +2,7 @@
 using FluentValidation.AspNetCore;
 using JTea.OfferScrappers.WindowsService.Abstraction.Services;
 using JTea.OfferScrappers.WindowsService.Core.Services;
-using JTea.OfferScrappers.WindowsService.Models;
+using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Persistence;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Repositories;
@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Quartz;
 using Quartz.Spi;
@@ -71,7 +72,7 @@ namespace JTea.OfferScrappers.WindowsService
 
             LogInfo("Database initialized");
 
-            Configuration configuration = serviceProvider.GetService<IConfigurationRepository>()
+            ConfigurationModel configuration = serviceProvider.GetService<IConfigurationRepository>()
                 .GetConfiguration();
 
             ISchedulingService schedulingService = serviceProvider.GetService<ISchedulingService>();
@@ -93,6 +94,7 @@ namespace JTea.OfferScrappers.WindowsService
         private void InitializeCoreServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IConfigurationService, ConfigurationService>();
+            serviceCollection.AddScoped<IOfferHeadersService, OfferHeadersService>();
         }
 
         private void InitializeDatabase(IServiceCollection serviceCollection)
@@ -106,6 +108,9 @@ namespace JTea.OfferScrappers.WindowsService
 
             serviceCollection.AddSingleton<IDataAccessService>(service);
             serviceCollection.AddSingleton<IConfigurationRepository, ConfigurationRepository>();
+            serviceCollection.AddSingleton<IOfferHeadersRepository, OfferHeadersRepository>();
+            serviceCollection.AddSingleton<IOffersRepository, OffersRepository>();
+            serviceCollection.AddSingleton<IOfferHistoriesRepository, OfferHistoriesRepository>();
         }
 
         private void InitializeLifetimeService(IServiceProvider serviceProvider)
@@ -165,9 +170,11 @@ namespace JTea.OfferScrappers.WindowsService
                 {
                     x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    x.SerializerSettings.Converters.Add(new StringEnumConverter());
                 });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGenNewtonsoftSupport();
 
             builder.Services.AddFluentValidationAutoValidation();
 
@@ -197,6 +204,8 @@ namespace JTea.OfferScrappers.WindowsService
         private void RegisterValidators(IServiceCollection services)
         {
             services.AddScoped<IValidator<UpdateConfigurationRequest>, UpdateConfigurationRequestValidator>();
+            services.AddScoped<IValidator<CreateOfferHeaderRequest>, CreateOfferHeaderRequestValidator>();
+            services.AddScoped<IValidator<UpdateOfferHeaderRequest>, UpdateOfferHeaderRequestValidator>();
         }
 
         private void LogInfo(string message)

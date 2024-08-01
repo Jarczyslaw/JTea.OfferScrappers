@@ -1,6 +1,6 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Responses
+﻿namespace JTea.OfferScrappers.WindowsService.Models.Domain
 {
-    public class GetConfigurationResponse
+    public class ConfigurationModel : BaseModel
     {
         public string CronExpression { get; set; }
 

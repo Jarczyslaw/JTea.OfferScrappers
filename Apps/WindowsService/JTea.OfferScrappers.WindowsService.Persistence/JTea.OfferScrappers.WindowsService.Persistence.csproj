@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers\JTea.OfferScrappers.csproj" />
     <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Models\JTea.OfferScrappers.WindowsService.Models.csproj" />
     <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Persistence.Abstraction\JTea.OfferScrappers.WindowsService.Persistence.Abstraction.csproj" />
   </ItemGroup>

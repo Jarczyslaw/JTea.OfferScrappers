@@ -1,13 +1,13 @@
-﻿using JTea.OfferScrappers.WindowsService.Models;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
     public interface IConfigurationService
     {
-        Configuration GetConfiguration();
+        ConfigurationModel GetConfiguration();
 
         Task StartNow();
 
-        Task UpdateConfiguration(Configuration newConfiguration);
+        Task UpdateConfiguration(ConfigurationModel newConfiguration);
     }
 }

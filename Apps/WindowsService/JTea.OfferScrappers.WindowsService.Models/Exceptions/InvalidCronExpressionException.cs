@@ -1,4 +1,4 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Abstraction.Exceptions
+﻿namespace JTea.OfferScrappers.WindowsService.Models.Exceptions
 {
     public class InvalidCronExpressionException : DefinedException
     {

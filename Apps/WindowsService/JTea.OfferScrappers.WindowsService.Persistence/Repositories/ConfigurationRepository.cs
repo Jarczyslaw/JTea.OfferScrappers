@@ -1,4 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Models;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Entities;
 using JToolbox.DataAccess.SQLiteNet;
@@ -10,7 +10,6 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
     public class ConfigurationRepository : BaseRepository<ConfigurationEntity>, IConfigurationRepository
     {
         private readonly IDataAccessService _dataAccessService;
-
         private readonly IMapper _mapper;
 
         public ConfigurationRepository(
@@ -21,13 +20,13 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             _dataAccessService = dataAccessService;
         }
 
-        public Configuration GetConfiguration()
+        public ConfigurationModel GetConfiguration()
         {
             ConfigurationEntity entity = _dataAccessService.Execute(GetFirstOrDefault);
-            return _mapper.Map<Configuration>(entity);
+            return _mapper.Map<ConfigurationModel>(entity);
         }
 
-        public void UpdateConfiguration(Configuration configuration)
+        public void UpdateConfiguration(ConfigurationModel configuration)
         {
             ConfigurationEntity entity = _mapper.Map<ConfigurationEntity>(configuration);
             _dataAccessService.ExecuteTransaction(

@@ -1,11 +1,11 @@
-﻿using JTea.OfferScrappers.WindowsService.Models;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Abstraction
 {
     public interface IConfigurationRepository
     {
-        Configuration GetConfiguration();
+        ConfigurationModel GetConfiguration();
 
-        void UpdateConfiguration(Configuration configuration);
+        void UpdateConfiguration(ConfigurationModel configuration);
     }
 }
