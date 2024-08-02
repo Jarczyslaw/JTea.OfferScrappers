@@ -3,7 +3,6 @@ using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JToolbox.Core.Abstraction;
-using MapsterMapper;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
@@ -12,16 +11,13 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
         private static readonly SemaphoreSlim _configurationSemaphore = new(1, 1);
         private readonly IConfigurationRepository _configurationRepository;
         private readonly ILoggerService _loggerService;
-        private readonly IMapper _mapper;
         private readonly ISchedulingService _schedulingService;
 
         public ConfigurationService(
-            IMapper mapper,
             ILoggerService loggerService,
             ISchedulingService schedulingService,
             IConfigurationRepository configurationRepository)
         {
-            _mapper = mapper;
             _loggerService = loggerService;
             _schedulingService = schedulingService;
             _configurationRepository = configurationRepository;

@@ -2,20 +2,16 @@
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
-using MapsterMapper;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
     public class OfferHeadersService : IOfferHeadersService
     {
-        private readonly IMapper _mapper;
         private readonly IOfferHeadersRepository _offerHeadersRepository;
 
         public OfferHeadersService(
-            IMapper mapper,
             IOfferHeadersRepository offerHeadersRepository)
         {
-            _mapper = mapper;
             _offerHeadersRepository = offerHeadersRepository;
         }
 
