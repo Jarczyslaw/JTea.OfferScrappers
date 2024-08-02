@@ -6,6 +6,7 @@ using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Validators;
 using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
 using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Validators;
 using JTea.OfferScrappers.WindowsService.Core.Services;
+using JTea.OfferScrappers.WindowsService.ErrorHandling;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Persistence;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;

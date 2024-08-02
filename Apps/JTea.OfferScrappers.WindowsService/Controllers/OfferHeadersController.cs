@@ -3,6 +3,7 @@ using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Responses;
 using JTea.OfferScrappers.WindowsService.Core.Services;
 using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JToolbox.Core.Models.Results;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,17 +30,17 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
             CheckModel();
 
             OfferHeaderModel offerHeader = _mapper.Map<OfferHeaderModel>(request);
-            OfferHeaderModel result = _offerHeadersService.Create(offerHeader);
+            Result<OfferHeaderModel> result = _offerHeadersService.Create(offerHeader);
 
-            return Ok(_mapper.Map<OfferHeaderModelResponse>(result));
+            return CreateActionResult(result, _mapper.Map<OfferHeaderModelResponse>);
         }
 
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            bool deleted = _offerHeadersService.Delete(id);
+            Result<bool> result = _offerHeadersService.Delete(id);
 
-            return Ok(deleted);
+            return CreateActionResult(result);
         }
 
         [HttpDelete("all")]
@@ -69,17 +70,17 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpGet("{id}")]
         public ActionResult<OfferHeaderModelResponse> GetById(int id)
         {
-            OfferHeaderModel result = _offerHeadersService.GetById(id);
+            Result<OfferHeaderModel> result = _offerHeadersService.GetById(id);
 
-            return Ok(_mapper.Map<OfferHeaderModelResponse>(result));
+            return CreateActionResult(result, _mapper.Map<OfferHeaderModelResponse>);
         }
 
         [HttpPut("{id}/enabled")]
         public ActionResult<bool> SetEnabled(int id, bool enabled)
         {
-            bool updated = _offerHeadersService.SetEnabled(id, enabled);
+            Result<bool> updated = _offerHeadersService.SetEnabled(id, enabled);
 
-            return Ok(updated);
+            return CreateActionResult(updated);
         }
 
         [HttpPut]
@@ -88,9 +89,9 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
             CheckModel();
 
             UpdateOfferHeader update = _mapper.Map<UpdateOfferHeader>(request);
-            OfferHeaderModel updated = _offerHeadersService.Update(update);
+            Result<OfferHeaderModel> updated = _offerHeadersService.Update(update);
 
-            return Ok(updated);
+            return CreateActionResult(updated, _mapper.Map<OfferHeaderModelResponse>);
         }
     }
 }

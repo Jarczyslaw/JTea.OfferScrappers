@@ -1,4 +1,5 @@
 ﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JToolbox.Core.Models.Results;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
@@ -8,6 +9,6 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         Task StartNow();
 
-        Task UpdateConfiguration(ConfigurationModel newConfiguration);
+        Task<Result<ConfigurationModel>> UpdateConfiguration(ConfigurationModel newConfiguration);
     }
 }

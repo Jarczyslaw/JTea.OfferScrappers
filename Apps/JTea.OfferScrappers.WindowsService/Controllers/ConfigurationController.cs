@@ -2,6 +2,7 @@
 using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Responses;
 using JTea.OfferScrappers.WindowsService.Core.Services;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JToolbox.Core.Models.Results;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,14 +43,14 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateConfiguration([FromBody] UpdateConfigurationRequest request)
+        public async Task<ActionResult<ConfigurationModelResponse>> UpdateConfiguration([FromBody] UpdateConfigurationRequest request)
         {
             CheckModel();
 
             ConfigurationModel configuration = _mapper.Map<ConfigurationModel>(request);
-            await _configurationService.UpdateConfiguration(configuration);
+            Result<ConfigurationModel> result = await _configurationService.UpdateConfiguration(configuration);
 
-            return Ok();
+            return CreateActionResult(result, _mapper.Map<ConfigurationModelResponse>);
         }
     }
 }

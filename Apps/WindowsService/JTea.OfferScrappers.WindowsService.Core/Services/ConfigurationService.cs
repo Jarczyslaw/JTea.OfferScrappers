@@ -3,6 +3,7 @@ using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JToolbox.Core.Abstraction;
+using JToolbox.Core.Models.Results;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
@@ -27,7 +28,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public Task StartNow() => _schedulingService.StartNow();
 
-        public async Task UpdateConfiguration(ConfigurationModel newConfiguration)
+        public async Task<Result<ConfigurationModel>> UpdateConfiguration(ConfigurationModel newConfiguration)
         {
             try
             {
@@ -40,7 +41,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
                 {
                     if (!_schedulingService.IsValidCronExpression(newConfiguration.CronExpression))
                     {
-                        throw new InvalidCronExpressionException(newConfiguration.CronExpression);
+                        return Result<ConfigurationModel>.AsError(new InvalidCronExpressionException(newConfiguration.CronExpression));
                     }
 
                     rescheduleRequired = true;
@@ -54,6 +55,8 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
                     await _schedulingService.StartWithCron(newConfiguration.CronExpression);
                     _loggerService.Info($"Quartz rescheduled with cron expression: {newConfiguration.CronExpression}");
                 }
+
+                return new Result<ConfigurationModel>(newConfiguration);
             }
             finally
             {

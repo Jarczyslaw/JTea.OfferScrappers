@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using System.Net;
 
-namespace JTea.OfferScrappers.WindowsService
+namespace JTea.OfferScrappers.WindowsService.ErrorHandling
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {
@@ -40,7 +40,7 @@ namespace JTea.OfferScrappers.WindowsService
 
             var error = new RequestError()
             {
-                Type = exception.GetType().Name,
+                ExceptionType = exception.GetType().Name,
                 Message = exception.Message,
                 StackTrace = _webHostEnvironment.EnvironmentName == Environments.Development
                     ? exception.StackTrace
@@ -49,15 +49,6 @@ namespace JTea.OfferScrappers.WindowsService
 
             await httpContext.Response.WriteAsJsonAsync(error, cancellationToken);
             return true;
-        }
-
-        private class RequestError
-        {
-            public string Message { get; set; }
-
-            public string StackTrace { get; set; }
-
-            public string Type { get; set; }
         }
     }
 }

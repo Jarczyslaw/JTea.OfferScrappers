@@ -1,13 +1,14 @@
 ﻿using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JToolbox.Core.Models.Results;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
     public interface IOfferHeadersService
     {
-        OfferHeaderModel Create(OfferHeaderModel offerHeader);
+        Result<OfferHeaderModel> Create(OfferHeaderModel offerHeader);
 
-        bool Delete(int id);
+        Result<bool> Delete(int id);
 
         void DeleteAll();
 
@@ -15,10 +16,10 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter);
 
-        OfferHeaderModel GetById(int id);
+        Result<OfferHeaderModel> GetById(int id);
 
-        bool SetEnabled(int id, bool enabled);
+        Result<bool> SetEnabled(int id, bool enabled);
 
-        OfferHeaderModel Update(UpdateOfferHeader updateOfferHeader);
+        Result<OfferHeaderModel> Update(UpdateOfferHeader updateOfferHeader);
     }
 }

@@ -2,6 +2,7 @@
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
+using JToolbox.Core.Models.Results;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
@@ -15,19 +16,21 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
             _offerHeadersRepository = offerHeadersRepository;
         }
 
-        public OfferHeaderModel Create(OfferHeaderModel offerHeader)
+        public Result<OfferHeaderModel> Create(OfferHeaderModel offerHeader)
         {
-            ThrowIfOfferHeaderExists(offerHeader);
+            Result<OfferHeaderModel> result = CheckOfferHeaderExists(offerHeader);
+            if (result.IsError) { return result; }
 
-            return _offerHeadersRepository.Create(offerHeader);
+            OfferHeaderModel created = _offerHeadersRepository.Create(offerHeader);
+            return new(created);
         }
 
-        public bool Delete(int id)
+        public Result<bool> Delete(int id)
         {
             bool deleted = _offerHeadersRepository.Delete(id);
+            if (!deleted) { return Result<bool>.AsError(new OfferHeaderNotFoundException(id)); }
 
-            if (!deleted) { throw new OfferHeaderNotFoundException(id); }
-            return deleted;
+            return new(true);
         }
 
         public void DeleteAll() => _offerHeadersRepository.DeleteAll();
@@ -36,36 +39,36 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter) => _offerHeadersRepository.GetByFilter(filter);
 
-        public OfferHeaderModel GetById(int id)
+        public Result<OfferHeaderModel> GetById(int id)
         {
             OfferHeaderModel result = _offerHeadersRepository.GetById(id);
-            if (result == null) { throw new OfferHeaderNotFoundException(id); }
+            if (result == null) { return Result<OfferHeaderModel>.AsError(new OfferHeaderNotFoundException(id)); }
 
-            return result;
+            return new(result);
         }
 
-        public bool SetEnabled(int id, bool enabled)
+        public Result<bool> SetEnabled(int id, bool enabled)
         {
             bool updated = _offerHeadersRepository.SetEnabled(id, enabled);
-            if (!updated) { throw new OfferHeaderNotFoundException(id); }
+            if (!updated) { return Result<bool>.AsError(new OfferHeaderNotFoundException(id)); }
 
-            return updated;
+            return new(true);
         }
 
-        public OfferHeaderModel Update(UpdateOfferHeader updateOfferHeader)
+        public Result<OfferHeaderModel> Update(UpdateOfferHeader updateOfferHeader)
         {
             bool updated = _offerHeadersRepository.Update(updateOfferHeader);
-            if (!updated) { throw new OfferHeaderNotFoundException(updateOfferHeader.Id); }
+            if (!updated) { return Result<OfferHeaderModel>.AsError(new OfferHeaderNotFoundException(updateOfferHeader.Id)); }
 
             return GetById(updateOfferHeader.Id);
         }
 
-        private void ThrowIfOfferHeaderExists(OfferHeaderModel offerHeader)
+        private Result<OfferHeaderModel> CheckOfferHeaderExists(OfferHeaderModel offerHeader)
         {
             List<OfferHeaderModel> existingHeaders = _offerHeadersRepository.GetAll();
             if (existingHeaders.Any(x => x.Title == offerHeader.Title))
             {
-                throw new OfferHeaderExistsException(offerHeader.Title);
+                return Result<OfferHeaderModel>.AsError(new OfferHeaderExistsException(offerHeader.Title));
             }
 
             List<Scrapper> existingScrappers = existingHeaders.ConvertAll(x => ScrapperFactory.Create(x.Type, x.OfferUrl));
@@ -74,8 +77,11 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
             if (existingScrappers.Any(x => x.Type == newScrapper.Type && x.FullOfferUrl == newScrapper.FullOfferUrl))
             {
-                throw new OfferHeaderExistsException(offerHeader.Type, offerHeader.OfferUrl);
+                return Result<OfferHeaderModel>.AsError(
+                    new OfferHeaderExistsException(offerHeader.Type, offerHeader.OfferUrl));
             }
+
+            return new();
         }
     }
 }
