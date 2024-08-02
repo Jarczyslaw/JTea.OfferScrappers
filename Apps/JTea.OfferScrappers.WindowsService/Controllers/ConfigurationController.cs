@@ -1,7 +1,7 @@
-﻿using JTea.OfferScrappers.WindowsService.Core.Services;
+﻿using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Requests;
+using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Responses;
+using JTea.OfferScrappers.WindowsService.Core.Services;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
-using JTea.OfferScrappers.WindowsService.Requests;
-using JTea.OfferScrappers.WindowsService.Responses;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,11 +23,11 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         }
 
         [HttpGet]
-        public ActionResult<GetConfigurationResponse> GetConfiguration()
+        public ActionResult<ConfigurationModelResponse> GetConfiguration()
         {
             ConfigurationModel configuration = _configurationService.GetConfiguration();
 
-            return Ok(_mapper.Map<GetConfigurationResponse>(configuration));
+            return Ok(_mapper.Map<ConfigurationModelResponse>(configuration));
         }
 
         [HttpGet("ping")]

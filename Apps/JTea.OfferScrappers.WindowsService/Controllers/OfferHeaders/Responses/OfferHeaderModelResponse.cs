@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace JTea.OfferScrappers.WindowsService.Responses
+namespace JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Responses
 {
     public class OfferHeaderModelResponse
     {

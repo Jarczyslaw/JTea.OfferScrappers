@@ -1,8 +1,8 @@
-﻿using JTea.OfferScrappers.WindowsService.Core.Services;
+﻿using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
+using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Responses;
+using JTea.OfferScrappers.WindowsService.Core.Services;
 using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
-using JTea.OfferScrappers.WindowsService.Requests;
-using JTea.OfferScrappers.WindowsService.Responses;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,14 +51,11 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         }
 
         [HttpGet("all")]
-        public ActionResult<GetAllOfferHeadersResponse> GetAll()
+        public ActionResult<List<OfferHeaderModelResponse>> GetAll()
         {
             List<OfferHeaderModel> result = _offerHeadersService.GetAll();
 
-            return Ok(new GetAllOfferHeadersResponse
-            {
-                OfferHeaders = _mapper.Map<List<OfferHeaderModelResponse>>(result)
-            });
+            return Ok(_mapper.Map<List<OfferHeaderModelResponse>>(result));
         }
 
         [HttpPost("filter")]

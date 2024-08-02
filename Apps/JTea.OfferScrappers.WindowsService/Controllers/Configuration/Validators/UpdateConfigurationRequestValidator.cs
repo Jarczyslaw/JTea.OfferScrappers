@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using JTea.OfferScrappers.WindowsService.Requests;
+using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Requests;
 
-namespace JTea.OfferScrappers.WindowsService.Validators
+namespace JTea.OfferScrappers.WindowsService.Controllers.Configuration.Validators
 {
     public class UpdateConfigurationRequestValidator : AbstractValidator<UpdateConfigurationRequest>
     {

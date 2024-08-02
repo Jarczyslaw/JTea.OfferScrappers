@@ -1,6 +1,6 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Responses
+﻿namespace JTea.OfferScrappers.WindowsService.Controllers.Configuration.Requests
 {
-    public class GetConfigurationResponse
+    public class UpdateConfigurationRequest
     {
         public string CronExpression { get; set; }
 

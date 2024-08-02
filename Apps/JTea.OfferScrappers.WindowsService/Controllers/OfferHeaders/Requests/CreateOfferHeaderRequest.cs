@@ -1,4 +1,4 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Requests
+﻿namespace JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests
 {
     public class CreateOfferHeaderRequest : BaseCreateUpdateOfferHeaderRequest
     {

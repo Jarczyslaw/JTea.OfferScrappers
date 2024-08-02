@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using JTea.OfferScrappers.WindowsService.Requests;
+using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
 
-namespace JTea.OfferScrappers.WindowsService.Validators
+namespace JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Validators
 {
     public class BaseCreateUpdateOfferHeaderRequestValidator<T> : AbstractValidator<T>
         where T : BaseCreateUpdateOfferHeaderRequest
