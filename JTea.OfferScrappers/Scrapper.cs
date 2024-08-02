@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using JTea.OfferScrappers.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace JTea.OfferScrappers
         public string OffersCountText { get; set; }
 
         public string OfferUrl { get; }
+
+        public abstract ScrapperType Type { get; }
 
         public static string CombinePaths(params string[] paths)
         {

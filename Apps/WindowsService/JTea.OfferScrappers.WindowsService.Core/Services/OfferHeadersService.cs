@@ -21,10 +21,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public OfferHeaderModel Create(OfferHeaderModel offerHeader)
         {
-            if (_offerHeadersRepository.CheckIfOfferHeaderExists(offerHeader))
-            {
-                throw new OfferHeaderExistsException(offerHeader.Type, offerHeader.OfferUrl);
-            }
+            ThrowIfOfferHeaderExists(offerHeader);
 
             return _offerHeadersRepository.Create(offerHeader);
         }
@@ -65,6 +62,24 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
             if (!updated) { throw new OfferHeaderNotFoundException(updateOfferHeader.Id); }
 
             return GetById(updateOfferHeader.Id);
+        }
+
+        private void ThrowIfOfferHeaderExists(OfferHeaderModel offerHeader)
+        {
+            List<OfferHeaderModel> existingHeaders = _offerHeadersRepository.GetAll();
+            if (existingHeaders.Any(x => x.Title == offerHeader.Title))
+            {
+                throw new OfferHeaderExistsException(offerHeader.Title);
+            }
+
+            List<Scrapper> existingScrappers = existingHeaders.ConvertAll(x => ScrapperFactory.Create(x.Type, x.OfferUrl));
+
+            Scrapper newScrapper = ScrapperFactory.Create(offerHeader.Type, offerHeader.OfferUrl);
+
+            if (existingScrappers.Any(x => x.Type == newScrapper.Type && x.FullOfferUrl == newScrapper.FullOfferUrl))
+            {
+                throw new OfferHeaderExistsException(offerHeader.Type, offerHeader.OfferUrl);
+            }
         }
     }
 }

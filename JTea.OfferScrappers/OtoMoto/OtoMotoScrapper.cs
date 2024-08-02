@@ -16,6 +16,8 @@ namespace JTea.OfferScrappers.OtoMoto
         {
         }
 
+        public override ScrapperType Type => ScrapperType.OtoMoto;
+
         protected override List<string> GetOfferAdditionalUrls(HtmlDocument document)
         {
             HtmlNode paginationNode = document.DocumentNode

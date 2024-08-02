@@ -6,5 +6,10 @@
             : base($"Scrapper with type {scrapperType} for {offerUrl} url already exists")
         {
         }
+
+        public OfferHeaderExistsException(string title)
+            : base($"Scrapper with title {title} already exists")
+        {
+        }
     }
 }

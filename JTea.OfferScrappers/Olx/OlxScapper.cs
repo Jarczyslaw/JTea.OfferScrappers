@@ -16,6 +16,8 @@ namespace JTea.OfferScrappers.Olx
         {
         }
 
+        public override ScrapperType Type => ScrapperType.Olx;
+
         protected override List<string> GetOfferAdditionalUrls(HtmlDocument document)
         {
             HtmlNode paginationListNode = document.DocumentNode

@@ -22,11 +22,6 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             _dataAccessService = dataAccessService;
         }
 
-        public bool CheckIfOfferHeaderExists(OfferHeaderModel offerHeader)
-        {
-            return _dataAccessService.Execute(x => Any(x, x => x.OfferUrl == offerHeader.OfferUrl && x.Type == offerHeader.Type));
-        }
-
         public OfferHeaderModel Create(OfferHeaderModel offerHeader)
         {
             OfferHeaderEntity entity = _mapper.Map<OfferHeaderEntity>(offerHeader);
