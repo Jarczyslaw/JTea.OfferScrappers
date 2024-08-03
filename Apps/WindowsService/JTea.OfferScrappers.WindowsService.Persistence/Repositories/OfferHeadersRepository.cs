@@ -47,11 +47,11 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter)
         {
-            List<Expression<Func<OfferHeaderEntity, bool>>> expressions = new();
+            List<Expression<Func<OfferHeaderEntity, bool>>> expressions = [];
 
             if (filter.Type != null) { expressions.Add(x => x.Type == filter.Type); }
 
-            if (filter.Enabled != null) { expressions.Add(x => x.Enabled == filter.Enabled); }
+            if (filter.Id != null) { expressions.Add(x => x.Id == filter.Id); }
 
             if (!string.IsNullOrEmpty(filter.Title)) { expressions.Add(x => x.Title.Contains(filter.Title)); }
 

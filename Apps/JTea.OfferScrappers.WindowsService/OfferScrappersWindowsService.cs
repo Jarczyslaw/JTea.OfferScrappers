@@ -1,23 +1,13 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using JTea.OfferScrappers.WindowsService.Abstraction.Services;
-using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Requests;
-using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Validators;
-using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
-using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Validators;
-using JTea.OfferScrappers.WindowsService.Core.Services;
 using JTea.OfferScrappers.WindowsService.ErrorHandling;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
-using JTea.OfferScrappers.WindowsService.Persistence;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
-using JTea.OfferScrappers.WindowsService.Persistence.Repositories;
-using JTea.OfferScrappers.WindowsService.Scheduling;
 using JTea.OfferScrappers.WindowsService.Settings;
 using JToolbox.Core.Abstraction;
 using JToolbox.DataAccess.SQLiteNet;
 using JToolbox.Misc.Logging;
 using JToolbox.Misc.TopshelfUtils;
-using MapsterMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +16,6 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Quartz;
-using Quartz.Spi;
 
 namespace JTea.OfferScrappers.WindowsService
 {
@@ -94,28 +82,6 @@ namespace JTea.OfferScrappers.WindowsService
             LogInfo("Quartz stopped");
         }
 
-        private void InitializeCoreServices(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddScoped<IConfigurationService, ConfigurationService>();
-            serviceCollection.AddScoped<IOfferHeadersService, OfferHeadersService>();
-        }
-
-        private void InitializeDatabase(IServiceCollection serviceCollection)
-        {
-            DbInitializer initializer = new();
-            DataAccessService service = new(initializer)
-            {
-                CacheConnection = false,
-                UseMigrationLockFile = false
-            };
-
-            serviceCollection.AddSingleton<IDataAccessService>(service);
-            serviceCollection.AddSingleton<IConfigurationRepository, ConfigurationRepository>();
-            serviceCollection.AddSingleton<IOfferHeadersRepository, OfferHeadersRepository>();
-            serviceCollection.AddSingleton<IOffersRepository, OffersRepository>();
-            serviceCollection.AddSingleton<IOfferHistoriesRepository, OfferHistoriesRepository>();
-        }
-
         private void InitializeLifetimeService(IServiceProvider serviceProvider)
         {
             IHostApplicationLifetime hostApplicationLifetime = serviceProvider.GetRequiredService<IHostApplicationLifetime>();
@@ -125,27 +91,6 @@ namespace JTea.OfferScrappers.WindowsService
 
             hostApplicationLifetime.ApplicationStarted
                 .Register(async () => await ApplicationStarted(serviceProvider));
-        }
-
-        private void InitializeQuartz(IServiceCollection serviceCollection)
-        {
-            serviceCollection.Configure<QuartzOptions>(_globalSettingsProvider.QuartzSection);
-            serviceCollection.AddQuartz(x => x.UseDefaultThreadPool(y => y.MaxConcurrency = 2));
-
-            serviceCollection.AddSingleton<ISchedulingService, SchedulingService>();
-            serviceCollection.AddSingleton<IJobFactory, JobFactory>();
-            serviceCollection.AddScoped<MainJob>();
-        }
-
-        private void InitializeServices(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddSingleton(_loggerService);
-            serviceCollection.AddSingleton<IGlobalSettingsProvider>(_globalSettingsProvider);
-            serviceCollection.AddSingleton<IMapper>(new Mapper());
-
-            InitializeQuartz(serviceCollection);
-            InitializeDatabase(serviceCollection);
-            InitializeCoreServices(serviceCollection);
         }
 
         private void InitializeWebApplication(bool launchedInConsole)
@@ -181,9 +126,7 @@ namespace JTea.OfferScrappers.WindowsService
 
             builder.Services.AddFluentValidationAutoValidation();
 
-            RegisterValidators(builder.Services);
-
-            InitializeServices(builder.Services);
+            builder.Services.AddApplicationServices(_loggerService, _globalSettingsProvider);
 
             WebApplication app = builder.Build();
 
@@ -202,13 +145,6 @@ namespace JTea.OfferScrappers.WindowsService
             app.Start();
 
             _webApplication = app;
-        }
-
-        private void RegisterValidators(IServiceCollection services)
-        {
-            services.AddScoped<IValidator<UpdateConfigurationRequest>, UpdateConfigurationRequestValidator>();
-            services.AddScoped<IValidator<CreateOfferHeaderRequest>, CreateOfferHeaderRequestValidator>();
-            services.AddScoped<IValidator<UpdateOfferHeaderRequest>, UpdateOfferHeaderRequestValidator>();
         }
 
         private void LogInfo(string message)
