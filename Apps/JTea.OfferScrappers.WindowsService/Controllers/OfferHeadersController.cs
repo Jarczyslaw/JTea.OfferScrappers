@@ -1,6 +1,6 @@
 ﻿using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
 using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Responses;
-using JTea.OfferScrappers.WindowsService.Core.Services;
+using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
 using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JToolbox.Core.Models.Results;
@@ -38,7 +38,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            Result<bool> result = _offerHeadersService.Delete(id);
+            Result result = _offerHeadersService.Delete(id);
 
             return CreateActionResult(result);
         }
@@ -46,9 +46,9 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpDelete("all")]
         public ActionResult DeleteAll()
         {
-            _offerHeadersService.DeleteAll();
+            Result result = _offerHeadersService.DeleteAll();
 
-            return Ok();
+            return CreateActionResult(result);
         }
 
         [HttpGet("all")]
@@ -76,9 +76,9 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         }
 
         [HttpPut("{id}/enabled")]
-        public ActionResult<bool> SetEnabled(int id, bool enabled)
+        public ActionResult SetEnabled(int id, bool enabled)
         {
-            Result<bool> updated = _offerHeadersService.SetEnabled(id, enabled);
+            Result updated = _offerHeadersService.SetEnabled(id, enabled);
 
             return CreateActionResult(updated);
         }

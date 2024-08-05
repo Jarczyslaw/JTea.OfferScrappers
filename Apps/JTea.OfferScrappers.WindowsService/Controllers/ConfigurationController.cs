@@ -1,6 +1,6 @@
 ﻿using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Requests;
 using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Responses;
-using JTea.OfferScrappers.WindowsService.Core.Services;
+using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JToolbox.Core.Models.Results;
 using MapsterMapper;
@@ -29,17 +29,6 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
             ConfigurationModel configuration = _configurationService.GetConfiguration();
 
             return Ok(_mapper.Map<ConfigurationModelResponse>(configuration));
-        }
-
-        [HttpGet("ping")]
-        public ActionResult<bool> Ping() => Ok(true);
-
-        [HttpPost("startNow")]
-        public async Task<ActionResult> StartNow()
-        {
-            await _configurationService.StartNow();
-
-            return Ok();
         }
 
         [HttpPut]

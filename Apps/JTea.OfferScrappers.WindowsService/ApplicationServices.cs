@@ -5,6 +5,7 @@ using JTea.OfferScrappers.WindowsService.Controllers.Configuration.Validators;
 using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
 using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Validators;
 using JTea.OfferScrappers.WindowsService.Core.Services;
+using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
 using JTea.OfferScrappers.WindowsService.Persistence;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Repositories;
@@ -40,6 +41,7 @@ namespace JTea.OfferScrappers.WindowsService
         {
             services.AddScoped<IConfigurationService, ConfigurationService>();
             services.AddScoped<IOfferHeadersService, OfferHeadersService>();
+            services.AddSingleton<IProcessingService, ProcessingService>();
         }
 
         private static void InitializeDatabase(IServiceCollection services)

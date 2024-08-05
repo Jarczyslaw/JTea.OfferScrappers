@@ -7,6 +7,9 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
 {
     public abstract class BaseController : ControllerBase
     {
+        [HttpGet("ping")]
+        public ActionResult<bool> Ping() => Ok(true);
+
         protected void CheckModel()
         {
             if (!ModelState.IsValid)

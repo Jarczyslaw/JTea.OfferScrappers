@@ -123,6 +123,7 @@ namespace JTea.OfferScrappers.WindowsService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSwaggerGenNewtonsoftSupport();
+            builder.Services.AddHttpClient("swaggerClient", client => client.Timeout = TimeSpan.FromMinutes(15));
 
             builder.Services.AddFluentValidationAutoValidation();
 
@@ -134,7 +135,7 @@ namespace JTea.OfferScrappers.WindowsService
             app.UseExceptionHandler(_ => { });
             app.UseCors("AllowAll");
 
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(x => x.DisplayRequestDuration());
             app.UseSwagger();
 
             InitializeLifetimeService(app.Services);
