@@ -8,6 +8,10 @@
 
         public string ImageHref { get; set; }
 
+        public OfferHistoryModel LastHistory => Histories.Count == 0
+            ? null
+            : Histories.MaxBy(x => x.Date);
+
         public OfferHeaderModel OfferHeader { get; set; }
 
         public int OfferHeaderId { get; set; }

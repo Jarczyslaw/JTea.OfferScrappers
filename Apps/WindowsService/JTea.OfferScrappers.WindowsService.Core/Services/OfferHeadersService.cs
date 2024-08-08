@@ -79,6 +79,9 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
             return GetById(updateOfferHeader.Id);
         }
 
+        private static Result<T> GetProcessingStateResult<T>()
+            => Result<T>.AsError(new ProcessingStateException());
+
         private Result<OfferHeaderModel> CheckOfferHeaderExists(OfferHeaderModel offerHeader)
         {
             List<OfferHeaderModel> existingHeaders = _offerHeadersRepository.GetAll();
@@ -99,8 +102,5 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
             return new();
         }
-
-        private Result<T> GetProcessingStateResult<T>()
-            => Result<T>.AsError(new ProcessingStateException());
     }
 }

@@ -87,4 +87,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\OfferHeaders\Responses\" />
+    <Folder Include="Controllers\Reports\" />
+  </ItemGroup>
+
 </Project>

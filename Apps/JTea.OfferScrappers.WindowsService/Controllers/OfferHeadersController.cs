@@ -1,5 +1,5 @@
-﻿using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
-using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Responses;
+﻿using JTea.OfferScrappers.WindowsService.Controllers.Common.Responses;
+using JTea.OfferScrappers.WindowsService.Controllers.OfferHeaders.Requests;
 using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
 using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
@@ -38,6 +38,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
+            // TODO
             Result result = _offerHeadersService.Delete(id);
 
             return CreateActionResult(result);
@@ -46,6 +47,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpDelete("all")]
         public ActionResult DeleteAll()
         {
+            // TODO
             Result result = _offerHeadersService.DeleteAll();
 
             return CreateActionResult(result);
@@ -55,14 +57,6 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         public ActionResult<List<OfferHeaderModelResponse>> GetAll()
         {
             List<OfferHeaderModel> result = _offerHeadersService.GetAll();
-
-            return Ok(_mapper.Map<List<OfferHeaderModelResponse>>(result));
-        }
-
-        [HttpPost("filter")]
-        public ActionResult<List<OfferHeaderModelResponse>> GetByFilter([FromBody] OfferHeadersFilter filter)
-        {
-            List<OfferHeaderModel> result = _offerHeadersService.GetByFilter(filter);
 
             return Ok(_mapper.Map<List<OfferHeaderModelResponse>>(result));
         }

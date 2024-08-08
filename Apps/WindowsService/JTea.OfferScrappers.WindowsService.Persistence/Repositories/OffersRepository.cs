@@ -1,4 +1,5 @@
-﻿using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Entities;
 using JToolbox.DataAccess.SQLiteNet;
 using JToolbox.DataAccess.SQLiteNet.Repositories;
@@ -17,6 +18,12 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
         {
             _mapper = mapper;
             _dataAccessService = dataAccessService;
+        }
+
+        public List<OfferModel> GetByOfferHeaderId(int offerHeaderId)
+        {
+            List<OfferEntity> entities = _dataAccessService.Execute(x => GetBy(x, y => y.OfferHeaderId == offerHeaderId));
+            return _mapper.Map<List<OfferModel>>(entities);
         }
     }
 }

@@ -41,6 +41,7 @@ namespace JTea.OfferScrappers.WindowsService
         {
             services.AddScoped<IConfigurationService, ConfigurationService>();
             services.AddScoped<IOfferHeadersService, OfferHeadersService>();
+            services.AddScoped<IReportsService, ReportsService>();
             services.AddSingleton<IProcessingService, ProcessingService>();
         }
 
