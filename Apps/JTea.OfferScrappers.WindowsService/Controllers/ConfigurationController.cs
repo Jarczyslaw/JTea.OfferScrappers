@@ -31,6 +31,9 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
             return Ok(_mapper.Map<ConfigurationModelResponse>(configuration));
         }
 
+        [HttpGet("dbVersion")]
+        public ActionResult<int> GetDbVersion() => Ok(_configurationService.GetDbVersion());
+
         [HttpPut]
         public async Task<ActionResult<ConfigurationModelResponse>> UpdateConfiguration([FromBody] UpdateConfigurationRequest request)
         {

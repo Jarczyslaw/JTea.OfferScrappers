@@ -6,6 +6,8 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Abstraction
     {
         ConfigurationModel GetConfiguration();
 
+        int GetDbVersion();
+
         void UpdateConfiguration(ConfigurationModel configuration);
     }
 }

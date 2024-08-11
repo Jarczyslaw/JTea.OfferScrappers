@@ -1,13 +1,19 @@
 ﻿using JTea.OfferScrappers.WindowsService.Persistence.Migrations;
-using JToolbox.DataAccess.SQLiteNet;
-using JToolbox.DataAccess.SQLiteNet.Migrations;
-using System.Reflection;
+using JToolbox.Core.TimeProvider;
+using JToolbox.DataAccess.L2DB.Migrations;
+using JToolbox.DataAccess.L2DB.SQLite;
+using LinqToDB;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence
 {
-    public class DbInitializer : BaseInitializer
+    public class DbInitializer : BaseSQLiteInitializer
     {
-        protected override Assembly EntitiesAssembly => GetType().Assembly;
+        public DbInitializer(ITimeProvider timeProvider)
+            : base(timeProvider)
+        {
+        }
+
+        public override DataOptions GetDataOptions => new DataOptions().UseSQLiteOfficial();
 
         protected override List<BaseMigration> Migrations => [new Migration001_Init()];
     }

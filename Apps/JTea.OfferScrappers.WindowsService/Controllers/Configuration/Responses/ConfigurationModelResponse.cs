@@ -4,8 +4,8 @@
     {
         public string CronExpression { get; set; }
 
-        public TimeSpan DelayBetweenOffersChecks { get; set; }
+        public int DelayBetweenOffersChecksSeconds { get; set; }
 
-        public TimeSpan DelayBetweenSubPagesChecks { get; set; }
+        public int DelayBetweenSubPagesChecksSeconds { get; set; }
     }
 }

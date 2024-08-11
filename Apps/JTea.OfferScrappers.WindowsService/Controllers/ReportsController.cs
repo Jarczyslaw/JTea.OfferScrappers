@@ -1,6 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Controllers.Common.Responses;
-using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
-using JTea.OfferScrappers.WindowsService.Models;
+﻿using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JTea.OfferScrappers.WindowsService.Controllers
@@ -14,13 +12,6 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         public ReportsController(IReportsService reportsService)
         {
             _reportsService = reportsService;
-        }
-
-        [HttpPost("filter")]
-        public ActionResult<List<OfferHeaderModelResponse>> GetByFilter([FromBody] OfferHeadersFilter filter)
-        {
-            // TODO
-            return Ok();
         }
     }
 }

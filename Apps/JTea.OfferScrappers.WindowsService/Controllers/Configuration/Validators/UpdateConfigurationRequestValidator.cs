@@ -8,6 +8,8 @@ namespace JTea.OfferScrappers.WindowsService.Controllers.Configuration.Validator
         public UpdateConfigurationRequestValidator()
         {
             RuleFor(x => x.CronExpression).NotEmpty();
+            RuleFor(x => x.DelayBetweenOffersChecksSeconds).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.DelayBetweenSubPagesChecksSeconds).GreaterThanOrEqualTo(0);
         }
     }
 }

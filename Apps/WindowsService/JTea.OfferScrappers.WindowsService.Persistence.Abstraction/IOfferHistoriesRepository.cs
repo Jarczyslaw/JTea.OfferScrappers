@@ -1,11 +1,9 @@
-﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+﻿using LinqToDB.Data;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Abstraction
 {
     public interface IOfferHistoriesRepository
     {
-        void Add(OfferHistoryModel model);
-
-        Dictionary<int, List<OfferHistoryModel>> GetHistories(IEnumerable<int> offerIds);
+        void DeleteByOfferIds(DataConnection db, List<int> offerIds);
     }
 }

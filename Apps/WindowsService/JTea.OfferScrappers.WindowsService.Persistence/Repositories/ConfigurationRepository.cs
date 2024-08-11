@@ -1,8 +1,8 @@
 ﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Entities;
-using JToolbox.DataAccess.SQLiteNet;
-using JToolbox.DataAccess.SQLiteNet.Repositories;
+using JToolbox.DataAccess.L2DB;
+using JToolbox.DataAccess.L2DB.Repositories;
 using MapsterMapper;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
@@ -25,6 +25,8 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             ConfigurationEntity entity = _dataAccessService.Execute(GetFirstOrDefault);
             return _mapper.Map<ConfigurationModel>(entity);
         }
+
+        public int GetDbVersion() => _dataAccessService.GetDbVersion();
 
         public void UpdateConfiguration(ConfigurationModel configuration)
         {

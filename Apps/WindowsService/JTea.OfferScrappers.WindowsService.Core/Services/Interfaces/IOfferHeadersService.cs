@@ -6,6 +6,8 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services.Interfaces
 {
     public interface IOfferHeadersService
     {
+        Result Clear(int id);
+
         Result<OfferHeaderModel> Create(OfferHeaderModel offerHeader);
 
         Result Delete(int id);
@@ -13,8 +15,6 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services.Interfaces
         Result DeleteAll();
 
         List<OfferHeaderModel> GetAll();
-
-        List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter);
 
         Result<OfferHeaderModel> GetById(int id);
 

@@ -7,6 +7,8 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services.Interfaces
     {
         ConfigurationModel GetConfiguration();
 
+        int GetDbVersion();
+
         Task<Result<ConfigurationModel>> UpdateConfiguration(ConfigurationModel newConfiguration);
     }
 }

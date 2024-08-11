@@ -1,8 +1,8 @@
-﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
-using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
+﻿using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Entities;
-using JToolbox.DataAccess.SQLiteNet;
-using JToolbox.DataAccess.SQLiteNet.Repositories;
+using JToolbox.DataAccess.L2DB;
+using JToolbox.DataAccess.L2DB.Repositories;
+using LinqToDB.Data;
 using MapsterMapper;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
@@ -20,20 +20,9 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             _dataAccessService = dataAccessService;
         }
 
-        public void Add(OfferHistoryModel model)
+        public void DeleteByOfferIds(DataConnection db, List<int> offerIds)
         {
-            OfferHistoryEntity entity = _mapper.Map<OfferHistoryEntity>(model);
-            model.Id = _dataAccessService.Execute(x => Create(x, entity));
-        }
-
-        public Dictionary<int, List<OfferHistoryModel>> GetHistories(IEnumerable<int> offerIds)
-        {
-            List<OfferHistoryEntity> entities
-                = _dataAccessService.Execute(x => GetBy(x, y => offerIds.Contains(y.OfferId)));
-
-            List<OfferHistoryModel> models = _mapper.Map<List<OfferHistoryModel>>(entities);
-            return models.GroupBy(x => x.OfferId)
-                .ToDictionary(x => x.Key, x => x.ToList());
+            DeleteBy(db, x => offerIds.Contains(x.OfferId));
         }
     }
 }

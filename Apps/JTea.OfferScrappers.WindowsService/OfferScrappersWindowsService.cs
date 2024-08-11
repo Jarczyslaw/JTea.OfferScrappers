@@ -5,7 +5,7 @@ using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Settings;
 using JToolbox.Core.Abstraction;
-using JToolbox.DataAccess.SQLiteNet;
+using JToolbox.DataAccess.L2DB;
 using JToolbox.Misc.Logging;
 using JToolbox.Misc.TopshelfUtils;
 using Microsoft.AspNetCore.Builder;
@@ -51,25 +51,34 @@ namespace JTea.OfferScrappers.WindowsService
             LogInfo("Host application started");
             LogInfo($"Swagger is available at: {_globalSettingsProvider.Settings.ApiAddress}/swagger/");
 
-            IGlobalSettingsProvider globalSettingsProvider = serviceProvider.GetService<IGlobalSettingsProvider>();
-
-            IDataAccessService dataAccessService = serviceProvider.GetService<IDataAccessService>();
-
-            string databasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, globalSettingsProvider.Settings.DbFileName);
-            await dataAccessService.Init(
-                databasePath,
-                password: null,
-                skipInitialization: false);
-
+            await InitializeDatabase(serviceProvider);
             LogInfo("Database initialized");
 
+            ConfigurationModel configuration = await InitializeQuartz(serviceProvider);
+            LogInfo($"Quartz initialized with cron expression: {configuration.CronExpression}");
+        }
+
+        private static async Task<ConfigurationModel> InitializeQuartz(IServiceProvider serviceProvider)
+        {
             ConfigurationModel configuration = serviceProvider.GetService<IConfigurationRepository>()
                 .GetConfiguration();
 
             ISchedulingService schedulingService = serviceProvider.GetService<ISchedulingService>();
 
             await schedulingService.Initialize();
-            LogInfo($"Quartz initialized with cron expression: {configuration.CronExpression}");
+            await schedulingService.StartWithCron(configuration.CronExpression);
+            return configuration;
+        }
+
+        private static async Task InitializeDatabase(IServiceProvider serviceProvider)
+        {
+            IGlobalSettingsProvider globalSettingsProvider = serviceProvider.GetService<IGlobalSettingsProvider>();
+
+            IDataAccessService dataAccessService = serviceProvider.GetService<IDataAccessService>();
+
+            string databasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, globalSettingsProvider.Settings.DbFileName);
+            dataAccessService.ConnectionString = $"Data Source={databasePath};Version=3;";
+            await dataAccessService.Init();
         }
 
         private void ApplicationStopping(IServiceProvider serviceProvider)

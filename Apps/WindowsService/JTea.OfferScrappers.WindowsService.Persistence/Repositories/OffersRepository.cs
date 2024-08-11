@@ -1,8 +1,9 @@
-﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
-using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
+﻿using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Entities;
-using JToolbox.DataAccess.SQLiteNet;
-using JToolbox.DataAccess.SQLiteNet.Repositories;
+using JToolbox.DataAccess.L2DB;
+using JToolbox.DataAccess.L2DB.Repositories;
+using LinqToDB;
+using LinqToDB.Data;
 using MapsterMapper;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
@@ -20,10 +21,12 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             _dataAccessService = dataAccessService;
         }
 
-        public List<OfferModel> GetByOfferHeaderId(int offerHeaderId)
+        public List<int> GetOfferIdsByOfferHeaderId(DataConnection db, int offerHeaderId)
         {
-            List<OfferEntity> entities = _dataAccessService.Execute(x => GetBy(x, y => y.OfferHeaderId == offerHeaderId));
-            return _mapper.Map<List<OfferModel>>(entities);
+            return db.GetTable<OfferEntity>()
+                .Where(x => x.OfferHeaderId == offerHeaderId)
+                .Select(x => x.Id)
+                .ToList();
         }
     }
 }

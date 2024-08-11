@@ -12,7 +12,8 @@ using JTea.OfferScrappers.WindowsService.Persistence.Repositories;
 using JTea.OfferScrappers.WindowsService.Scheduling;
 using JTea.OfferScrappers.WindowsService.Settings;
 using JToolbox.Core.Abstraction;
-using JToolbox.DataAccess.SQLiteNet;
+using JToolbox.Core.TimeProvider;
+using JToolbox.DataAccess.L2DB;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
@@ -31,8 +32,11 @@ namespace JTea.OfferScrappers.WindowsService
             services.AddSingleton<IGlobalSettingsProvider>(globalSettingsProvider);
             services.AddSingleton<IMapper>(new Mapper());
 
+            ITimeProvider timeProvider = new LocalTimeProvider();
+            services.AddSingleton(timeProvider);
+
             InitializeQuartz(services, globalSettingsProvider);
-            InitializeDatabase(services);
+            InitializeDatabase(services, timeProvider);
             InitializeCoreServices(services);
             RegisterValidators(services);
         }
@@ -45,16 +49,11 @@ namespace JTea.OfferScrappers.WindowsService
             services.AddSingleton<IProcessingService, ProcessingService>();
         }
 
-        private static void InitializeDatabase(IServiceCollection services)
+        private static void InitializeDatabase(IServiceCollection services, ITimeProvider timeProvider)
         {
-            DbInitializer initializer = new();
-            DataAccessService service = new(initializer)
-            {
-                CacheConnection = false,
-                UseMigrationLockFile = false
-            };
+            DataAccessService dataAccessService = DataAccessFactory.Create(timeProvider);
 
-            services.AddSingleton<IDataAccessService>(service);
+            services.AddSingleton<IDataAccessService>(dataAccessService);
             services.AddSingleton<IConfigurationRepository, ConfigurationRepository>();
             services.AddSingleton<IOfferHeadersRepository, OfferHeadersRepository>();
             services.AddSingleton<IOffersRepository, OffersRepository>();

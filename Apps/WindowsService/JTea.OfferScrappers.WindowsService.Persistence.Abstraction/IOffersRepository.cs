@@ -1,9 +1,11 @@
-﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+﻿using LinqToDB.Data;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Abstraction
 {
     public interface IOffersRepository
     {
-        List<OfferModel> GetByOfferHeaderId(int offerHeaderId);
+        int DeleteMany(DataConnection db, List<int> ids);
+
+        List<int> GetOfferIdsByOfferHeaderId(DataConnection db, int offerHeaderId);
     }
 }

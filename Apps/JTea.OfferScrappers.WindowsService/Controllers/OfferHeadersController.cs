@@ -24,6 +24,14 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
             _mapper = mapper;
         }
 
+        [HttpDelete("clear")]
+        public ActionResult Clear(int id)
+        {
+            Result result = _offerHeadersService.Clear(id);
+
+            return CreateActionResult(result);
+        }
+
         [HttpPost]
         public ActionResult<OfferHeaderModelResponse> Create([FromBody] CreateOfferHeaderRequest request)
         {
@@ -38,7 +46,6 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            // TODO
             Result result = _offerHeadersService.Delete(id);
 
             return CreateActionResult(result);
@@ -47,7 +54,6 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpDelete("all")]
         public ActionResult DeleteAll()
         {
-            // TODO
             Result result = _offerHeadersService.DeleteAll();
 
             return CreateActionResult(result);

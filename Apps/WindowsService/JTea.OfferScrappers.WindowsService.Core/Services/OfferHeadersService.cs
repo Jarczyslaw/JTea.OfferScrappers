@@ -20,6 +20,15 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
             _processingService = processingService;
         }
 
+        public Result Clear(int id)
+        {
+            if (_processingService.State == ProcessingState.Running) { return GetProcessingStateResult(); }
+
+            _offerHeadersRepository.Clear(id);
+
+            return new();
+        }
+
         public Result<OfferHeaderModel> Create(OfferHeaderModel offerHeader)
         {
             Result<OfferHeaderModel> result = CheckOfferHeaderExists(offerHeader);
@@ -31,7 +40,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public Result Delete(int id)
         {
-            if (_processingService.State == ProcessingState.Running) { return GetProcessingStateResult<bool>(); }
+            if (_processingService.State == ProcessingState.Running) { return GetProcessingStateResult(); }
 
             bool deleted = _offerHeadersRepository.Delete(id);
             if (!deleted) { return Result.AsError(new OfferHeaderNotFoundException(id)); }
@@ -41,15 +50,13 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public Result DeleteAll()
         {
-            if (_processingService.State == ProcessingState.Running) { return Result.AsError(new ProcessingStateException()); }
+            if (_processingService.State == ProcessingState.Running) { return GetProcessingStateResult(); }
 
             _offerHeadersRepository.DeleteAll();
             return new();
         }
 
         public List<OfferHeaderModel> GetAll() => _offerHeadersRepository.GetAll();
-
-        public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter) => _offerHeadersRepository.GetByFilter(filter);
 
         public Result<OfferHeaderModel> GetById(int id)
         {
@@ -81,6 +88,9 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         private static Result<T> GetProcessingStateResult<T>()
             => Result<T>.AsError(new ProcessingStateException());
+
+        private static Result GetProcessingStateResult()
+            => Result.AsError(new ProcessingStateException());
 
         private Result<OfferHeaderModel> CheckOfferHeaderExists(OfferHeaderModel offerHeader)
         {

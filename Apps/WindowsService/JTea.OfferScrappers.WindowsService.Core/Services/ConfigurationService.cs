@@ -31,6 +31,8 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public ConfigurationModel GetConfiguration() => _configurationRepository.GetConfiguration();
 
+        public int GetDbVersion() => _configurationRepository.GetDbVersion();
+
         public async Task<Result<ConfigurationModel>> UpdateConfiguration(ConfigurationModel newConfiguration)
         {
             if (_processingService.State == ProcessingState.Running) { return Result<ConfigurationModel>.AsError(new ProcessingStateException()); }

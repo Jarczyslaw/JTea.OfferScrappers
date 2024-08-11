@@ -1,18 +1,26 @@
 ﻿using JTea.OfferScrappers.WindowsService.Persistence.Entities;
-using JToolbox.DataAccess.SQLiteNet.Migrations;
-using SQLite;
+using JToolbox.DataAccess.L2DB.Migrations;
+using LinqToDB;
+using LinqToDB.Data;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Migrations
 {
     internal class Migration001_Init : BaseMigration
     {
-        public override void Up(SQLiteConnection db, bool newDatabase)
+        public override void Up(DataConnection db, bool newDatabase)
         {
+            db.CreateTable<ConfigurationEntity>(tableOptions: TableOptions.CheckExistence);
+            db.CreateTable<OfferHeaderEntity>(tableOptions: TableOptions.CheckExistence);
+            db.CreateTable<OfferEntity>(tableOptions: TableOptions.CheckExistence);
+            db.CreateTable<OfferHistoryEntity>(tableOptions: TableOptions.CheckExistence);
+
             if (newDatabase)
             {
                 db.Insert(new ConfigurationEntity
                 {
-                    CronExpression = "0 0 21 ? * * *"
+                    CronExpression = "0 0 21 ? * * *",
+                    DelayBetweenOffersChecksSeconds = 5,
+                    DelayBetweenSubPagesChecksSeconds = 1,
                 });
             }
         }
