@@ -5,7 +5,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Abstraction
 {
     public interface IOfferHeadersRepository
     {
-        void Clear(int offerHeaderId);
+        bool Clear(int offerHeaderId);
 
         OfferHeaderModel Create(OfferHeaderModel offerHeader);
 
@@ -13,11 +13,11 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Abstraction
 
         void DeleteAll();
 
-        List<OfferHeaderModel> GetAll();
+        List<OfferHeaderModel> GetAll(bool completeData);
 
         List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter);
 
-        OfferHeaderModel GetById(int id);
+        OfferHeaderModel GetById(int id, bool completeData);
 
         bool SetEnabled(int id, bool enabled);
 

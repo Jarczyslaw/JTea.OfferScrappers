@@ -24,7 +24,8 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
         {
             if (_processingService.State == ProcessingState.Running) { return GetProcessingStateResult(); }
 
-            _offerHeadersRepository.Clear(id);
+            bool cleared = _offerHeadersRepository.Clear(id);
+            if (!cleared) { return Result.AsError(new OfferHeaderNotFoundException(id)); }
 
             return new();
         }
@@ -56,11 +57,11 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
             return new();
         }
 
-        public List<OfferHeaderModel> GetAll() => _offerHeadersRepository.GetAll();
+        public List<OfferHeaderModel> GetAll() => _offerHeadersRepository.GetAll(completeData: false);
 
         public Result<OfferHeaderModel> GetById(int id)
         {
-            OfferHeaderModel result = _offerHeadersRepository.GetById(id);
+            OfferHeaderModel result = _offerHeadersRepository.GetById(id, completeData: false);
             if (result == null) { return Result<OfferHeaderModel>.AsError(new OfferHeaderNotFoundException(id)); }
 
             return new(result);
@@ -94,7 +95,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         private Result<OfferHeaderModel> CheckOfferHeaderExists(OfferHeaderModel offerHeader)
         {
-            List<OfferHeaderModel> existingHeaders = _offerHeadersRepository.GetAll();
+            List<OfferHeaderModel> existingHeaders = _offerHeadersRepository.GetAll(completeData: false);
             if (existingHeaders.Any(x => x.Title == offerHeader.Title))
             {
                 return Result<OfferHeaderModel>.AsError(new OfferHeaderExistsException(offerHeader.Title));

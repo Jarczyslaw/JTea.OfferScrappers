@@ -4,9 +4,9 @@ using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
 using JTea.OfferScrappers.WindowsService.Persistence.Entities;
 using JToolbox.DataAccess.L2DB;
 using JToolbox.DataAccess.L2DB.Repositories;
+using LinqToDB;
 using LinqToDB.Data;
 using MapsterMapper;
-using System.Linq.Expressions;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 {
@@ -29,9 +29,13 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             _offerHistoriesRepository = offerHistoriesRepository;
         }
 
-        public void Clear(int offerHeaderId)
+        public bool Clear(int offerHeaderId)
         {
+            OfferHeaderEntity offerHeader = _dataAccessService.Execute(x => GetById(x, offerHeaderId));
+            if (offerHeader == null) { return false; }
+
             _dataAccessService.ExecuteTransaction(x => DeleteOffersAndHistories(x, offerHeaderId));
+            return true;
         }
 
         public OfferHeaderModel Create(OfferHeaderModel offerHeader)
@@ -60,30 +64,76 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             });
         }
 
-        public List<OfferHeaderModel> GetAll()
+        public List<OfferHeaderModel> GetAll(bool completeData)
         {
-            List<OfferHeaderEntity> entities = _dataAccessService.Execute(GetAll);
+            List<OfferHeaderEntity> entities = _dataAccessService.Execute(x =>
+            {
+                IQueryable<OfferHeaderEntity> query = Table(x);
+
+                if (completeData)
+                {
+                    query = query.LoadWith(x => x.Offers)
+                        .ThenLoad(x => x.Histories);
+                }
+
+                return query.ToList();
+            });
+
+            OrderHistories(entities);
+
             return _mapper.Map<List<OfferHeaderModel>>(entities);
         }
 
         public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter)
         {
-            List<Expression<Func<OfferHeaderEntity, bool>>> expressions = [];
+            List<OfferHeaderEntity> entities = _dataAccessService.Execute(x =>
+            {
+                IQueryable<OfferHeaderEntity> query = Table(x);
 
-            if (filter.Type != null) { expressions.Add(x => x.Type == filter.Type); }
+                if (filter.CompleteData)
+                {
+                    query = query.LoadWith(x => x.Offers)
+                        .ThenLoad(x => x.Histories);
+                }
 
-            if (filter.Id != null) { expressions.Add(x => x.Id == filter.Id); }
+                if (filter.Id != null)
+                {
+                    query = query.Where(x => x.Id == filter.Id.Value);
+                }
+                else if (filter.Type != null)
+                {
+                    query = query.Where(x => x.Type == filter.Type.Value);
+                }
+                else if (!string.IsNullOrEmpty(filter.Title))
+                {
+                    query = query.Where(x => x.Title.Contains(filter.Title));
+                }
 
-            if (!string.IsNullOrEmpty(filter.Title)) { expressions.Add(x => x.Title.Contains(filter.Title)); }
+                return query.ToList();
+            });
 
-            List<OfferHeaderEntity> entities = _dataAccessService.Execute(x => GetBy(x, expressions.ToArray()));
+            OrderHistories(entities);
 
             return _mapper.Map<List<OfferHeaderModel>>(entities);
         }
 
-        public OfferHeaderModel GetById(int id)
+        public OfferHeaderModel GetById(int id, bool completeData)
         {
-            OfferHeaderEntity entity = _dataAccessService.Execute(x => GetById(x, id));
+            OfferHeaderEntity entity = _dataAccessService.Execute(x =>
+            {
+                IQueryable<OfferHeaderEntity> query = Table(x);
+
+                if (completeData)
+                {
+                    query = query.LoadWith(x => x.Offers)
+                        .ThenLoad(x => x.Histories);
+                }
+
+                return query.FirstOrDefault(x => x.Id == id);
+            });
+
+            OrderHistories(entity);
+
             return _mapper.Map<OfferHeaderModel>(entity);
         }
 
@@ -107,6 +157,17 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
             _offerHistoriesRepository.DeleteByOfferIds(db, offerIds);
             _offersRepository.DeleteMany(db, offerIds);
+        }
+
+        private void OrderHistories(OfferHeaderEntity entity)
+        {
+            entity.Offers?.ForEach(
+                y => y.Histories = y.Histories?.OrderBy(x => x.Id).ToList());
+        }
+
+        private void OrderHistories(List<OfferHeaderEntity> entities)
+        {
+            entities.ForEach(OrderHistories);
         }
     }
 }
