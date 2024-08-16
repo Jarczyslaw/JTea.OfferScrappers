@@ -31,23 +31,23 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public bool Clear(int offerHeaderId)
         {
-            OfferHeaderEntity offerHeader = _dataAccessService.Execute(x => GetById(x, offerHeaderId));
+            OfferHeaderEntity offerHeader = _dataAccessService.RunFunction(x => GetById(x, offerHeaderId));
             if (offerHeader == null) { return false; }
 
-            _dataAccessService.ExecuteTransaction(x => DeleteOffersAndHistories(x, offerHeaderId));
+            _dataAccessService.RunActionTransaction(x => DeleteOffersAndHistories(x, offerHeaderId));
             return true;
         }
 
         public OfferHeaderModel Create(OfferHeaderModel offerHeader)
         {
             OfferHeaderEntity entity = _mapper.Map<OfferHeaderEntity>(offerHeader);
-            offerHeader.Id = _dataAccessService.Execute(x => Create(x, entity));
+            offerHeader.Id = _dataAccessService.RunFunction(x => Create(x, entity));
             return offerHeader;
         }
 
         public bool Delete(int offerHeaderId)
         {
-            return _dataAccessService.ExecuteTransaction(x =>
+            return _dataAccessService.RunFunctionTransaction(x =>
             {
                 DeleteOffersAndHistories(x, offerHeaderId);
                 return Delete(x, offerHeaderId);
@@ -56,7 +56,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public void DeleteAll()
         {
-            _dataAccessService.ExecuteTransaction(x =>
+            _dataAccessService.RunActionTransaction(x =>
             {
                 x.Execute($"DELETE FROM {L2DbExtensions.GetTableName(typeof(OfferHistoryEntity))}");
                 x.Execute($"DELETE FROM {L2DbExtensions.GetTableName(typeof(OfferEntity))}");
@@ -66,7 +66,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public List<OfferHeaderModel> GetAll(bool completeData)
         {
-            List<OfferHeaderEntity> entities = _dataAccessService.Execute(x =>
+            List<OfferHeaderEntity> entities = _dataAccessService.RunFunction(x =>
             {
                 IQueryable<OfferHeaderEntity> query = Table(x);
 
@@ -86,7 +86,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter)
         {
-            List<OfferHeaderEntity> entities = _dataAccessService.Execute(x =>
+            List<OfferHeaderEntity> entities = _dataAccessService.RunFunction(x =>
             {
                 IQueryable<OfferHeaderEntity> query = Table(x);
 
@@ -119,7 +119,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public OfferHeaderModel GetById(int id, bool completeData)
         {
-            OfferHeaderEntity entity = _dataAccessService.Execute(x =>
+            OfferHeaderEntity entity = _dataAccessService.RunFunction(x =>
             {
                 IQueryable<OfferHeaderEntity> query = Table(x);
 
@@ -139,14 +139,14 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public bool SetEnabled(int id, bool enabled)
         {
-            return _dataAccessService.Execute(x => GetAndUpdate(x,
+            return _dataAccessService.RunFunction(x => GetAndUpdate(x,
                 y => y.Id == id,
                 y => y.Enabled = enabled)) > 0;
         }
 
         public bool Update(UpdateOfferHeader updateOfferHeader)
         {
-            return _dataAccessService.Execute(x => GetAndUpdate(x,
+            return _dataAccessService.RunFunction(x => GetAndUpdate(x,
                 y => y.Id == updateOfferHeader.Id,
                 y => _mapper.Map(updateOfferHeader, y))) > 0;
         }

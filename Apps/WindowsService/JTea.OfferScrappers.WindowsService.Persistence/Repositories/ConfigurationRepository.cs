@@ -22,7 +22,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public ConfigurationModel GetConfiguration()
         {
-            ConfigurationEntity entity = _dataAccessService.Execute(GetFirstOrDefault);
+            ConfigurationEntity entity = _dataAccessService.RunFunction(GetFirstOrDefault);
             return _mapper.Map<ConfigurationModel>(entity);
         }
 
@@ -31,7 +31,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
         public void UpdateConfiguration(ConfigurationModel configuration)
         {
             ConfigurationEntity entity = _mapper.Map<ConfigurationEntity>(configuration);
-            _dataAccessService.ExecuteTransaction(
+            _dataAccessService.RunActionTransaction(
                 x => Update(x, entity));
         }
     }
