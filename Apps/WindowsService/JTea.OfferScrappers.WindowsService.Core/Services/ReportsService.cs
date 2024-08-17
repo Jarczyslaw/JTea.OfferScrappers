@@ -1,4 +1,5 @@
 ﻿using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
+using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;
@@ -17,6 +18,8 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
         }
 
         public List<OfferHeaderModel> GetAll() => _offerHeadersRepository.GetAll(completeData: true);
+
+        public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter) => _offerHeadersRepository.GetByFilter(filter);
 
         public Result<OfferHeaderModel> GetById(int id)
         {

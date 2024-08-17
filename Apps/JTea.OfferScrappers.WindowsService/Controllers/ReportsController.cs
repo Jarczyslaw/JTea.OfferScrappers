@@ -1,5 +1,7 @@
 ﻿using JTea.OfferScrappers.WindowsService.Controllers.Common.Responses;
+using JTea.OfferScrappers.WindowsService.Controllers.Reports.Requests;
 using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
+using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JToolbox.Core.Models.Results;
 using MapsterMapper;
@@ -26,6 +28,15 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         public ActionResult<List<OfferHeaderModelResponse>> GetAll()
         {
             List<OfferHeaderModel> result = _reportsService.GetAll();
+
+            return Ok(_mapper.Map<List<OfferHeaderModelResponse>>(result));
+        }
+
+        [HttpPost("filter")]
+        public ActionResult<List<OfferHeaderModelResponse>> GetByFilter(OfferHeadersFilterRequest request)
+        {
+            OfferHeadersFilter filter = _mapper.Map<OfferHeadersFilter>(request);
+            List<OfferHeaderModel> result = _reportsService.GetByFilter(filter);
 
             return Ok(_mapper.Map<List<OfferHeaderModelResponse>>(result));
         }

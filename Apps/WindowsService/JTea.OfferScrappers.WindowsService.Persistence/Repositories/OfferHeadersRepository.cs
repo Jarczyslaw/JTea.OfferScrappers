@@ -31,11 +31,22 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
 
         public bool Clear(int offerHeaderId)
         {
-            OfferHeaderEntity offerHeader = _dataAccessService.RunFunction(x => GetById(x, offerHeaderId));
-            if (offerHeader == null) { return false; }
+            return _dataAccessService.RunFunctionTransaction(x =>
+            {
+                int affectedRows = GetAndUpdate(x,
+                    y => y.Id == offerHeaderId,
+                    y =>
+                    {
+                        y.LastCheckDateEnd
+                            = y.LastCheckDateStart = null;
+                    });
 
-            _dataAccessService.RunActionTransaction(x => DeleteOffersAndHistories(x, offerHeaderId));
-            return true;
+                if (affectedRows == 0) { return false; }
+
+                DeleteOffersAndHistories(x, offerHeaderId);
+
+                return true;
+            });
         }
 
         public OfferHeaderModel Create(OfferHeaderModel offerHeader)
