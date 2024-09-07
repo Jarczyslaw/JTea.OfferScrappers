@@ -1,5 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Models;
-using JTea.OfferScrappers.WindowsService.Models.Domain;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JToolbox.Core.Models.Results;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services.Interfaces

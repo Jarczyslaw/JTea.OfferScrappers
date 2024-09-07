@@ -1,6 +1,7 @@
 ﻿using JTea.OfferScrappers.Olx;
 using JTea.OfferScrappers.OtoDom;
 using JTea.OfferScrappers.OtoMoto;
+using JTea.OfferScrappers.Utils;
 using Newtonsoft.Json;
 
 namespace JTea.OfferScrappers.ConsoleExample
@@ -11,9 +12,17 @@ namespace JTea.OfferScrappers.ConsoleExample
         {
             try
             {
-                await ScrapFromOlx();
-                await ScrapFromOtoDom();
-                await ScrapFromOtoMoto();
+                WriteLine($"Scrapping offers with {PageSourceProviderType.HtmlAgilityPack} source provider", ConsoleColor.DarkCyan);
+
+                await ScrapFromOlx(PageSourceProviderType.HtmlAgilityPack);
+                await ScrapFromOtoDom(PageSourceProviderType.HtmlAgilityPack);
+                await ScrapFromOtoMoto(PageSourceProviderType.HtmlAgilityPack);
+
+                WriteLine($"Scrapping offers with {PageSourceProviderType.Selenium} source provider", ConsoleColor.DarkCyan);
+
+                await ScrapFromOlx(PageSourceProviderType.Selenium);
+                await ScrapFromOtoDom(PageSourceProviderType.Selenium);
+                await ScrapFromOtoMoto(PageSourceProviderType.Selenium);
             }
             catch (Exception ex)
             {
@@ -31,39 +40,43 @@ namespace JTea.OfferScrappers.ConsoleExample
             return filePath;
         }
 
-        private static async Task Scrap(Scrapper scrapper, string fileName)
+        private static async Task Scrap(Scrapper scrapper, PageSourceProviderType pageSourceProviderType, string fileName)
         {
             WriteLine($"Scrapping offers with {scrapper.GetType().Name} from {scrapper.FullOfferUrl}", ConsoleColor.Cyan);
 
-            List<Offer> result = await scrapper.Scrap(new ScrapperConfiguration()
+            ScrapResult scrapResult = await scrapper.Scrap(new ScrapperConfiguration()
             {
                 DelayBetweenSubPagesChecks = TimeSpan.FromSeconds(1),
-                PageSourceProvider = new SeleniumPageSourceProvider.PageSourceProvider(true),
+                PageSourceProvider = PageSourceProviderFactory.Create(pageSourceProviderType),
                 CheckSubpages = true,
                 PageSourceLogPath = "C://test"
             });
 
-            WriteLine($"Scrapped offers count text: {scrapper.OffersCountText}", ConsoleColor.Green);
+            List<Offer> result = scrapResult.Offers;
+
+            WriteLine($"Scrapped offers count text: {scrapResult.OffersCountText}", ConsoleColor.Green);
             WriteLine($"Scrapped offers: {result.Count}", ConsoleColor.Green);
 
             IEnumerable<Offer> invalidOffers = result.Where(x => !x.IsValid);
             WriteLine($"Invalid offers count: {invalidOffers.Count()}",
                 !invalidOffers.Any() ? ConsoleColor.Green : ConsoleColor.Red);
 
+            fileName = $"{fileName}_{pageSourceProviderType}";
+
             string filePath = SaveOffers(result, fileName);
             Console.WriteLine($"Offers serialized to: {filePath}");
         }
 
-        private static Task ScrapFromOlx()
+        private static Task ScrapFromOlx(PageSourceProviderType pageSourceProviderType)
         {
             const string offerUrl = "oferty/q-elitebook-8470p/";
 
             Scrapper scrapper = new OlxScapper(offerUrl);
 
-            return Scrap(scrapper, "olx_offers");
+            return Scrap(scrapper, pageSourceProviderType, "olx_offers");
         }
 
-        private static Task ScrapFromOtoDom()
+        private static Task ScrapFromOtoDom(PageSourceProviderType pageSourceProviderType)
         {
             // no results
             //const string offerUrl = "pl/wyniki/sprzedaz/mieszkanie/wiele-lokalizacji?limit=36&ownerTypeSingleSelect=ALL&areaMin=1000000&locations=%5Bslaskie%2Fkatowice%2Fkatowice%2Fkatowice%2Fbrynow--osiedle-zgrzebnioka%2Cslaskie%2Fkatowice%2Fkatowice%2Fkatowice%2Cslaskie%5D&by=DEFAULT&direction=DESC&viewType=listing";
@@ -71,10 +84,10 @@ namespace JTea.OfferScrappers.ConsoleExample
 
             Scrapper scrapper = new OtoDomScapper(offerUrl);
 
-            return Scrap(scrapper, "otodom_offers");
+            return Scrap(scrapper, pageSourceProviderType, "otodom_offers");
         }
 
-        private static Task ScrapFromOtoMoto()
+        private static Task ScrapFromOtoMoto(PageSourceProviderType pageSourceProviderType)
         {
             // no results
             //const string offerUrl = "osobowe/honda/accord/seg-cabrio/od-2024?search%5Bfilter_float_price%3Ato%5D=50000";
@@ -82,7 +95,7 @@ namespace JTea.OfferScrappers.ConsoleExample
 
             Scrapper scrapper = new OtoMotoScrapper(offerUrl);
 
-            return Scrap(scrapper, "otomoto_offers");
+            return Scrap(scrapper, pageSourceProviderType, "otomoto_offers");
         }
 
         private static void WriteLine(string text, ConsoleColor color)

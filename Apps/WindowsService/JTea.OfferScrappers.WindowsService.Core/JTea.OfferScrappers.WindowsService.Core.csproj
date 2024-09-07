@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj" />
     <ProjectReference Include="..\..\..\JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj" />
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers.Utils\JTea.OfferScrappers.Utils.csproj" />
     <ProjectReference Include="..\..\..\JTea.OfferScrappers\JTea.OfferScrappers.csproj" />
     <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Abstraction\JTea.OfferScrappers.WindowsService.Abstraction.csproj" />
     <ProjectReference Include="..\JTea.OfferScrappers.WindowsService.Models\JTea.OfferScrappers.WindowsService.Models.csproj" />

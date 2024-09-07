@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Windows
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService.Models", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Models\JTea.OfferScrappers.WindowsService.Models.csproj", "{5B7A1DA2-4135-45AA-987D-76886770E8B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JTea.OfferScrappers.WindowsService.Abstraction", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Abstraction\JTea.OfferScrappers.WindowsService.Abstraction.csproj", "{C36399F1-235C-4641-A275-5887B6B26743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService.Abstraction", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Abstraction\JTea.OfferScrappers.WindowsService.Abstraction.csproj", "{C36399F1-235C-4641-A275-5887B6B26743}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JTea.OfferScrappers.Utils", "JTea.OfferScrappers.Utils\JTea.OfferScrappers.Utils.csproj", "{861B9AD9-4F68-4285-9102-4FD2B60843A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{C36399F1-235C-4641-A275-5887B6B26743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C36399F1-235C-4641-A275-5887B6B26743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C36399F1-235C-4641-A275-5887B6B26743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{861B9AD9-4F68-4285-9102-4FD2B60843A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{861B9AD9-4F68-4285-9102-4FD2B60843A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{861B9AD9-4F68-4285-9102-4FD2B60843A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{861B9AD9-4F68-4285-9102-4FD2B60843A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

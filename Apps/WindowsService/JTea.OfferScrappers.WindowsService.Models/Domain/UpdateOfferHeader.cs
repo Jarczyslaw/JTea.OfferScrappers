@@ -1,4 +1,4 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Models
+﻿namespace JTea.OfferScrappers.WindowsService.Models.Domain
 {
     public class UpdateOfferHeader
     {

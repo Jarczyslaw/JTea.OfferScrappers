@@ -1,4 +1,6 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Models.Exceptions
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+
+namespace JTea.OfferScrappers.WindowsService.Models.Exceptions
 {
     public class ProcessingStateException : DefinedException
     {

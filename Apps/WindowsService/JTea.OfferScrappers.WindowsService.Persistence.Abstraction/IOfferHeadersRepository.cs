@@ -1,5 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Models;
-using JTea.OfferScrappers.WindowsService.Models.Domain;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
 
 namespace JTea.OfferScrappers.WindowsService.Persistence.Abstraction
 {

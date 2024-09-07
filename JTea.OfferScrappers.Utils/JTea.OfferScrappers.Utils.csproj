@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers\JTea.OfferScrappers.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,4 @@
 ﻿using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
-using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JTea.OfferScrappers.WindowsService.Models.Exceptions;
 using JTea.OfferScrappers.WindowsService.Persistence.Abstraction;

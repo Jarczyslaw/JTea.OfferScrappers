@@ -1,7 +1,6 @@
 ﻿using JTea.OfferScrappers.WindowsService.Controllers.Common.Responses;
 using JTea.OfferScrappers.WindowsService.Controllers.Reports.Requests;
 using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
-using JTea.OfferScrappers.WindowsService.Models;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
 using JToolbox.Core.Models.Results;
 using MapsterMapper;

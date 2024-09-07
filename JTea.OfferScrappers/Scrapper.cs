@@ -20,8 +20,6 @@ namespace JTea.OfferScrappers
 
         public string FullOfferUrl => CombinePaths(BaseUrl, OfferUrl);
 
-        public string OffersCountText { get; set; }
-
         public string OfferUrl { get; }
 
         public abstract ScrapperType Type { get; }
@@ -33,7 +31,7 @@ namespace JTea.OfferScrappers
             return string.Join("/", paths.Select(x => x.Trim('/')));
         }
 
-        public virtual async Task<List<Offer>> Scrap(ScrapperConfiguration configuration)
+        public virtual async Task<ScrapResult> Scrap(ScrapperConfiguration configuration)
         {
             configuration = PrepareConfiguration(configuration);
 
@@ -41,14 +39,14 @@ namespace JTea.OfferScrappers
 
             HtmlDocument document = await GetDocument(FullOfferUrl, configuration, 1);
 
-            OffersCountText = GetOffersCountText(document);
+            string offersCountText = GetOffersCountText(document);
 
             result = AppendOffersFromDocument(result, document);
 
             List<Offer> limitedOffers = CheckOffersLimit(result, configuration);
-            if (limitedOffers != null) { return limitedOffers; }
+            if (limitedOffers != null) { return new ScrapResult(offersCountText, limitedOffers); }
 
-            if (!configuration.CheckSubpages) { return result; }
+            if (!configuration.CheckSubpages) { return new ScrapResult(offersCountText, result); }
 
             List<string> offerAdditionalUrls = GetOfferAdditionalUrls(document);
 
@@ -63,10 +61,10 @@ namespace JTea.OfferScrappers
                 result = AppendOffersFromDocument(result, document);
 
                 limitedOffers = CheckOffersLimit(result, configuration);
-                if (limitedOffers != null) { return limitedOffers; }
+                if (limitedOffers != null) { return new ScrapResult(offersCountText, limitedOffers); }
             }
 
-            return result;
+            return new ScrapResult(offersCountText, result);
         }
 
         protected List<Offer> AppendOffersFromDocument(List<Offer> result, HtmlDocument document)
