@@ -7,7 +7,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services.Interfaces
     {
         List<OfferHeaderModel> GetAll();
 
-        List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter);
+        List<OfferHeaderModel> GetByFilter(OfferHeadersFilterModel filter);
 
         Result<OfferHeaderModel> GetById(int id);
     }

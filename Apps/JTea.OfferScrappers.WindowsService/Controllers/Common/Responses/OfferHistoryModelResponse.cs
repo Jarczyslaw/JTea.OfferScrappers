@@ -1,4 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain.Enums;
 
 namespace JTea.OfferScrappers.WindowsService.Controllers.Common.Responses
 {

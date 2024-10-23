@@ -1,6 +1,6 @@
 ﻿namespace JTea.OfferScrappers.WindowsService.Models.Domain
 {
-    public class OfferHeadersFilter
+    public class OfferHeadersFilterModel
     {
         public bool CompleteData { get; set; } = true;
 

@@ -18,7 +18,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public List<OfferHeaderModel> GetAll() => _offerHeadersRepository.GetAll(completeData: true);
 
-        public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter) => _offerHeadersRepository.GetByFilter(filter);
+        public List<OfferHeaderModel> GetByFilter(OfferHeadersFilterModel filter) => _offerHeadersRepository.GetByFilter(filter);
 
         public Result<OfferHeaderModel> GetById(int id)
         {

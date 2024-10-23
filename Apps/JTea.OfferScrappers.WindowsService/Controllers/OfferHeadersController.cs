@@ -87,7 +87,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         {
             CheckModel();
 
-            UpdateOfferHeader update = _mapper.Map<UpdateOfferHeader>(request);
+            UpdateOfferHeaderModel update = _mapper.Map<UpdateOfferHeaderModel>(request);
             Result<OfferHeaderModel> updated = _offerHeadersService.Update(update);
 
             return CreateActionResult(updated, _mapper.Map<OfferHeaderModelResponse>);

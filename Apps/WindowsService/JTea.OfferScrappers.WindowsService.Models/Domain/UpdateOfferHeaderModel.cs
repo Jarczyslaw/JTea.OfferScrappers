@@ -1,10 +1,10 @@
 ﻿namespace JTea.OfferScrappers.WindowsService.Models.Domain
 {
-    public class UpdateOfferHeader
+    public class UpdateOfferHeaderModel
     {
-        public bool Enabled { get; set; }
-
         public int Id { get; set; }
+
+        public bool IsEnabled { get; set; }
 
         public string OfferUrl { get; set; }
 

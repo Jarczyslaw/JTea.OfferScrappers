@@ -1,6 +1,6 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Controllers.Processing.Requests
+﻿namespace JTea.OfferScrappers.WindowsService.Models.Domain
 {
-    public class FetchRequest
+    public class ScrapOffersArgumentsModel
     {
         public ScrapperType OfferType { get; set; }
 

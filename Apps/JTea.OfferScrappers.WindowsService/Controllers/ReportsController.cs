@@ -34,7 +34,7 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
         [HttpPost("filter")]
         public ActionResult<List<OfferHeaderModelResponse>> GetByFilter(OfferHeadersFilterRequest request)
         {
-            OfferHeadersFilter filter = _mapper.Map<OfferHeadersFilter>(request);
+            OfferHeadersFilterModel filter = _mapper.Map<OfferHeadersFilterModel>(request);
             List<OfferHeaderModel> result = _reportsService.GetByFilter(filter);
 
             return Ok(_mapper.Map<List<OfferHeaderModelResponse>>(result));

@@ -6,7 +6,7 @@ using JToolbox.Core.Models.Results;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services
 {
-    public class OfferHeadersService : IOfferHeadersService
+    public class OfferHeadersService : BaseService, IOfferHeadersService
     {
         private readonly IOfferHeadersRepository _offerHeadersRepository;
         private readonly IProcessingService _processingService;
@@ -21,10 +21,13 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public Result Clear(int id)
         {
-            if (_processingService.State == ProcessingState.Running) { return GetRunningStateResult(); }
+            if (_processingService.IsRunning) { return GetRunningStateResult(); }
 
-            bool cleared = _offerHeadersRepository.Clear(id);
-            if (!cleared) { return Result.AsError(new OfferHeaderNotFoundException(id)); }
+            OfferHeaderModel offerHeader = _offerHeadersRepository.GetById(id, completeData: false);
+            if (offerHeader == null) { return Result.AsError(new OfferHeaderNotFoundException(id)); }
+
+            offerHeader.ClearProcessingData();
+            _offerHeadersRepository.Clear(offerHeader);
 
             return new();
         }
@@ -40,7 +43,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public Result Delete(int id)
         {
-            if (_processingService.State == ProcessingState.Running) { return GetRunningStateResult(); }
+            if (_processingService.IsRunning) { return GetRunningStateResult(); }
 
             bool deleted = _offerHeadersRepository.Delete(id);
             if (!deleted) { return Result.AsError(new OfferHeaderNotFoundException(id)); }
@@ -50,7 +53,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public Result DeleteAll()
         {
-            if (_processingService.State == ProcessingState.Running) { return GetRunningStateResult(); }
+            if (_processingService.IsRunning) { return GetRunningStateResult(); }
 
             _offerHeadersRepository.DeleteAll();
             return new();
@@ -68,7 +71,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public Result SetEnabled(int id, bool enabled)
         {
-            if (_processingService.State == ProcessingState.Running) { return GetRunningState<bool>(); }
+            if (_processingService.IsRunning) { return GetRunningState<bool>(); }
 
             bool updated = _offerHeadersRepository.SetEnabled(id, enabled);
             if (!updated) { return Result.AsError(new OfferHeaderNotFoundException(id)); }
@@ -76,21 +79,15 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
             return new();
         }
 
-        public Result<OfferHeaderModel> Update(UpdateOfferHeader updateOfferHeader)
+        public Result<OfferHeaderModel> Update(UpdateOfferHeaderModel updateOfferHeader)
         {
-            if (_processingService.State == ProcessingState.Running) { return GetRunningState<OfferHeaderModel>(); }
+            if (_processingService.IsRunning) { return GetRunningState<OfferHeaderModel>(); }
 
             bool updated = _offerHeadersRepository.Update(updateOfferHeader);
             if (!updated) { return Result<OfferHeaderModel>.AsError(new OfferHeaderNotFoundException(updateOfferHeader.Id)); }
 
             return GetById(updateOfferHeader.Id);
         }
-
-        private static Result<T> GetRunningState<T>()
-            => Result<T>.AsError(new ProcessingStateException());
-
-        private static Result GetRunningStateResult()
-            => Result.AsError(new ProcessingStateException());
 
         private Result<OfferHeaderModel> CheckOfferHeaderExists(OfferHeaderModel offerHeader)
         {

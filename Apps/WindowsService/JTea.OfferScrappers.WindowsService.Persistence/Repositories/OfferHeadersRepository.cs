@@ -28,21 +28,14 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             _offerHistoriesRepository = offerHistoriesRepository;
         }
 
-        public bool Clear(int offerHeaderId)
+        public bool Clear(OfferHeaderModel offerHeader)
         {
+            OfferHeaderEntity entity = _mapper.Map<OfferHeaderEntity>(offerHeader);
+
             return _dataAccessService.RunFunctionTransaction(x =>
             {
-                int affectedRows = GetAndUpdate(x,
-                    y => y.Id == offerHeaderId,
-                    y =>
-                    {
-                        y.LastCheckDateEnd
-                            = y.LastCheckDateStart = null;
-                    });
-
-                if (affectedRows == 0) { return false; }
-
-                DeleteOffersAndHistories(x, offerHeaderId);
+                Update(x, entity);
+                DeleteOffersAndHistories(x, offerHeader.Id);
 
                 return true;
             });
@@ -94,7 +87,7 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
             return _mapper.Map<List<OfferHeaderModel>>(entities);
         }
 
-        public List<OfferHeaderModel> GetByFilter(OfferHeadersFilter filter)
+        public List<OfferHeaderModel> GetByFilter(OfferHeadersFilterModel filter)
         {
             List<OfferHeaderEntity> entities = _dataAccessService.RunFunction(x =>
             {
@@ -151,10 +144,10 @@ namespace JTea.OfferScrappers.WindowsService.Persistence.Repositories
         {
             return _dataAccessService.RunFunction(x => GetAndUpdate(x,
                 y => y.Id == id,
-                y => y.Enabled = enabled)) > 0;
+                y => y.IsEnabled = enabled)) > 0;
         }
 
-        public bool Update(UpdateOfferHeader updateOfferHeader)
+        public bool Update(UpdateOfferHeaderModel updateOfferHeader)
         {
             return _dataAccessService.RunFunction(x => GetAndUpdate(x,
                 y => y.Id == updateOfferHeader.Id,

@@ -1,13 +1,16 @@
 ﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JToolbox.Core.Models.Results;
 
 namespace JTea.OfferScrappers.WindowsService.Core.Services.Interfaces
 {
     public interface IProcessingService
     {
-        ProcessingState State { get; }
+        bool IsRunning { get; }
 
-        Task<ScrapResultModel> FetchOffers(FetchOffersArguments arguments);
+        Task<Result> ProcessAllOfferHeaders(bool waitIfCurrentlyProcessing);
 
-        Task<ScrapResultModel> TestFetchOffers(ScrapperType scrapperType, PageSourceProviderType pageSourceProviderType);
+        Task<ScrapResultModel> ScrapOffers(ScrapOffersArgumentsModel arguments);
+
+        Task<ScrapResultModel> ScrapTestOffers(ScrapperType scrapperType, PageSourceProviderType pageSourceProviderType);
     }
 }

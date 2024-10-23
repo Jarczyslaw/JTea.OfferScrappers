@@ -1,4 +1,4 @@
-﻿namespace JTea.OfferScrappers.WindowsService.Models.Domain
+﻿namespace JTea.OfferScrappers.WindowsService.Models.Domain.Enums
 {
     public enum OfferState
     {

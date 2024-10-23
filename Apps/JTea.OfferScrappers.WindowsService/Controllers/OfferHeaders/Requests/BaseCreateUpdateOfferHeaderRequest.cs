@@ -2,7 +2,7 @@
 {
     public abstract class BaseCreateUpdateOfferHeaderRequest
     {
-        public bool Enabled { get; set; }
+        public bool IsEnabled { get; set; }
 
         public string OfferUrl { get; set; }
 

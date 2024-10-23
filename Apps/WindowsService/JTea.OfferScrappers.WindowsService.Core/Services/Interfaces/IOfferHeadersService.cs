@@ -19,6 +19,6 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services.Interfaces
 
         Result SetEnabled(int id, bool enabled);
 
-        Result<OfferHeaderModel> Update(UpdateOfferHeader updateOfferHeader);
+        Result<OfferHeaderModel> Update(UpdateOfferHeaderModel updateOfferHeader);
     }
 }

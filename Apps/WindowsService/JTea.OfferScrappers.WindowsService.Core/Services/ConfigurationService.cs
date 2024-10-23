@@ -34,7 +34,7 @@ namespace JTea.OfferScrappers.WindowsService.Core.Services
 
         public async Task<Result<ConfigurationModel>> UpdateConfiguration(ConfigurationModel newConfiguration)
         {
-            if (_processingService.State == ProcessingState.Running) { return Result<ConfigurationModel>.AsError(new ProcessingStateException()); }
+            if (_processingService.IsRunning) { return Result<ConfigurationModel>.AsError(new ProcessingStateException()); }
 
             try
             {

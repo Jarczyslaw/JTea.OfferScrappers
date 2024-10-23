@@ -1,8 +1,8 @@
-﻿using JTea.OfferScrappers.WindowsService.Abstraction.Services;
-using JTea.OfferScrappers.WindowsService.Controllers.Common.Responses;
+﻿using JTea.OfferScrappers.WindowsService.Controllers.Common.Responses;
 using JTea.OfferScrappers.WindowsService.Controllers.Processing.Requests;
 using JTea.OfferScrappers.WindowsService.Core.Services.Interfaces;
 using JTea.OfferScrappers.WindowsService.Models.Domain;
+using JToolbox.Core.Models.Results;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,46 +14,43 @@ namespace JTea.OfferScrappers.WindowsService.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IProcessingService _processingService;
-        private readonly ISchedulingService _schedulingService;
 
         public ProcessingController(
             IMapper mapper,
-            ISchedulingService schedulingService,
             IProcessingService processingService)
         {
             _mapper = mapper;
-            _schedulingService = schedulingService;
             _processingService = processingService;
         }
 
-        [HttpPost("fetch")]
-        public async Task<ActionResult<ScrapResultModelResponse>> Fetch([FromBody] FetchRequest fetchRequest)
+        [HttpGet("processAll")]
+        public async Task<ActionResult> ProcessAll()
+        {
+            Result result = await Task.Run(() => _processingService.ProcessAllOfferHeaders(waitIfCurrentlyProcessing: false));
+
+            return CreateActionResult(result);
+        }
+
+        [HttpPost("scrap")]
+        public async Task<ActionResult<ScrapResultModelResponse>> ScrapOffers([FromBody] ScrapOffersRequest request)
         {
             CheckModel();
 
-            FetchOffersArguments arguments = _mapper.Map<FetchOffersArguments>(fetchRequest);
-            ScrapResultModel result = await Task.Run(() => _processingService.FetchOffers(arguments));
+            ScrapOffersArgumentsModel arguments = _mapper.Map<ScrapOffersArgumentsModel>(request);
+            ScrapResultModel result = await Task.Run(() => _processingService.ScrapOffers(arguments));
 
             return Ok(_mapper.Map<ScrapResultModelResponse>(result));
         }
 
-        [HttpGet("testFetch")]
-        public async Task<ActionResult<ScrapResultModelResponse>> TestFetch(
+        [HttpGet("scrapTest")]
+        public async Task<ActionResult<ScrapResultModelResponse>> ScrapTestOffers(
             ScrapperType scrapperType,
             PageSourceProviderType pageSourceProviderType)
         {
             ScrapResultModel result
-                = await Task.Run(() => _processingService.TestFetchOffers(scrapperType, pageSourceProviderType));
+                = await Task.Run(() => _processingService.ScrapTestOffers(scrapperType, pageSourceProviderType));
 
             return Ok(_mapper.Map<ScrapResultModelResponse>(result));
-        }
-
-        [HttpPost("triggerNow")]
-        public async Task<ActionResult> TriggerNow()
-        {
-            await _schedulingService.StartNow();
-
-            return Ok();
         }
     }
 }

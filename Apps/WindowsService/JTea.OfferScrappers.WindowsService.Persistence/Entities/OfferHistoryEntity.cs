@@ -1,4 +1,4 @@
-﻿using JTea.OfferScrappers.WindowsService.Models.Domain;
+﻿using JTea.OfferScrappers.WindowsService.Models.Domain.Enums;
 using JToolbox.DataAccess.L2DB.SQLite.Entities;
 using LinqToDB.Mapping;
 
