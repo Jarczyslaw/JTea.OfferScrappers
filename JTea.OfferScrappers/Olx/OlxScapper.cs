@@ -91,7 +91,7 @@ namespace JTea.OfferScrappers.Olx
             SetPriceAndToNegotiate(offer, offerDataNode);
 
             HtmlNode headerNode = linkNode
-                .Descendants("h6")
+                .Descendants("h4")
                 .FirstOrDefault();
 
             CheckNodeExists(headerNode, nameof(headerNode));

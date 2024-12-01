@@ -49,7 +49,7 @@ namespace JTea.OfferScrappers.OtoDom
 
             HtmlNode totalCountNode = searchHeadingNode.ParentNode
                 .Element("div")
-                ?.Element("div");
+                ?.Element("span");
 
             CheckNodeExists(totalCountNode, nameof(totalCountNode));
 

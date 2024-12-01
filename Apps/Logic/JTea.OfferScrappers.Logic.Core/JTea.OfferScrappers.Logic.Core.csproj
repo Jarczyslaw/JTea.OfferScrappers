@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj" />
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers.SeleniumPageSourceProvider\JTea.OfferScrappers.SeleniumPageSourceProvider.csproj" />
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers.Utils\JTea.OfferScrappers.Utils.csproj" />
+    <ProjectReference Include="..\..\..\JTea.OfferScrappers\JTea.OfferScrappers.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers.Logic.Abstraction\JTea.OfferScrappers.Logic.Abstraction.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers.Logic.Models\JTea.OfferScrappers.Logic.Models.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers.Logic.Persistence.Abstraction\JTea.OfferScrappers.Logic.Persistence.Abstraction.csproj" />
+    <ProjectReference Include="..\JTea.OfferScrappers.Logic.Persistence\JTea.OfferScrappers.Logic.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="JToolbox.Core">
+      <HintPath>..\..\Libraries\JToolbox.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

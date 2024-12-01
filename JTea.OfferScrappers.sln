@@ -13,21 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{0E875540-5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.ConsoleExample", "Apps\JTea.OfferScrappers.ConsoleExample\JTea.OfferScrappers.ConsoleExample.csproj", "{55F40EB0-19A9-4784-B63D-DF7D3AB5F3B7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WindowsService", "WindowsService", "{00E1F6A4-D143-4BD7-9F7D-C373EECB0A58}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logic", "Logic", "{00E1F6A4-D143-4BD7-9F7D-C373EECB0A58}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService", "Apps\JTea.OfferScrappers.WindowsService\JTea.OfferScrappers.WindowsService.csproj", "{D5B0696E-2B7C-4680-8DD4-6704F5F5FE03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService.Core", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Core\JTea.OfferScrappers.WindowsService.Core.csproj", "{01F3C33F-3C98-4DC0-B6EC-8389EEDF110E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Logic.Core", "Apps\Logic\JTea.OfferScrappers.Logic.Core\JTea.OfferScrappers.Logic.Core.csproj", "{01F3C33F-3C98-4DC0-B6EC-8389EEDF110E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService.Persistence.Abstraction", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Persistence.Abstraction\JTea.OfferScrappers.WindowsService.Persistence.Abstraction.csproj", "{8DBB08D9-59DE-4099-8EA3-8F170BEBC443}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Logic.Persistence.Abstraction", "Apps\Logic\JTea.OfferScrappers.Logic.Persistence.Abstraction\JTea.OfferScrappers.Logic.Persistence.Abstraction.csproj", "{8DBB08D9-59DE-4099-8EA3-8F170BEBC443}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService.Persistence", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Persistence\JTea.OfferScrappers.WindowsService.Persistence.csproj", "{F50429BB-0CC7-4DAE-BC9D-16EC87C55D6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Logic.Persistence", "Apps\Logic\JTea.OfferScrappers.Logic.Persistence\JTea.OfferScrappers.Logic.Persistence.csproj", "{F50429BB-0CC7-4DAE-BC9D-16EC87C55D6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService.Models", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Models\JTea.OfferScrappers.WindowsService.Models.csproj", "{5B7A1DA2-4135-45AA-987D-76886770E8B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Logic.Models", "Apps\Logic\JTea.OfferScrappers.Logic.Models\JTea.OfferScrappers.Logic.Models.csproj", "{5B7A1DA2-4135-45AA-987D-76886770E8B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WindowsService.Abstraction", "Apps\WindowsService\JTea.OfferScrappers.WindowsService.Abstraction\JTea.OfferScrappers.WindowsService.Abstraction.csproj", "{C36399F1-235C-4641-A275-5887B6B26743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Logic.Abstraction", "Apps\Logic\JTea.OfferScrappers.Logic.Abstraction\JTea.OfferScrappers.Logic.Abstraction.csproj", "{C36399F1-235C-4641-A275-5887B6B26743}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JTea.OfferScrappers.Utils", "JTea.OfferScrappers.Utils\JTea.OfferScrappers.Utils.csproj", "{861B9AD9-4F68-4285-9102-4FD2B60843A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.Utils", "JTea.OfferScrappers.Utils\JTea.OfferScrappers.Utils.csproj", "{861B9AD9-4F68-4285-9102-4FD2B60843A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JTea.OfferScrappers.WebHost", "Apps\JTea.OfferScrappers.WebHost\JTea.OfferScrappers.WebHost.csproj", "{B08A47DF-4CA9-4E70-8245-19FCDD316E7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,10 @@ Global
 		{861B9AD9-4F68-4285-9102-4FD2B60843A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{861B9AD9-4F68-4285-9102-4FD2B60843A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{861B9AD9-4F68-4285-9102-4FD2B60843A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B08A47DF-4CA9-4E70-8245-19FCDD316E7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B08A47DF-4CA9-4E70-8245-19FCDD316E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B08A47DF-4CA9-4E70-8245-19FCDD316E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B08A47DF-4CA9-4E70-8245-19FCDD316E7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{F50429BB-0CC7-4DAE-BC9D-16EC87C55D6D} = {00E1F6A4-D143-4BD7-9F7D-C373EECB0A58}
 		{5B7A1DA2-4135-45AA-987D-76886770E8B8} = {00E1F6A4-D143-4BD7-9F7D-C373EECB0A58}
 		{C36399F1-235C-4641-A275-5887B6B26743} = {00E1F6A4-D143-4BD7-9F7D-C373EECB0A58}
+		{B08A47DF-4CA9-4E70-8245-19FCDD316E7E} = {0E875540-5958-4E35-A22D-8F368D8D9852}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FD8C01E-E34A-4FFD-9ACB-1B2573212121}

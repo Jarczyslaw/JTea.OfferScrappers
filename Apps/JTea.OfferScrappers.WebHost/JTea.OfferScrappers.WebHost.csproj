@@ -1,24 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <Folder Include="Controllers\OfferHeaders\Responses\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.3.4" />
-    <PackageReference Include="Topshelf" Version="4.3.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.13.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\JTea.OfferScrappers.Abstraction\JTea.OfferScrappers.Abstraction.csproj" />
-    <ProjectReference Include="..\JTea.OfferScrappers.WebHost\JTea.OfferScrappers.WebHost.csproj" />
+    <ProjectReference Include="..\Logic\JTea.OfferScrappers.Logic.Abstraction\JTea.OfferScrappers.Logic.Abstraction.csproj" />
     <ProjectReference Include="..\Logic\JTea.OfferScrappers.Logic.Core\JTea.OfferScrappers.Logic.Core.csproj" />
     <ProjectReference Include="..\Logic\JTea.OfferScrappers.Logic.Models\JTea.OfferScrappers.Logic.Models.csproj" />
     <ProjectReference Include="..\Logic\JTea.OfferScrappers.Logic.Persistence.Abstraction\JTea.OfferScrappers.Logic.Persistence.Abstraction.csproj" />
@@ -41,31 +50,16 @@
     <Reference Include="JToolbox.Misc.QuartzScheduling">
       <HintPath>..\Libraries\JToolbox.Misc.QuartzScheduling.dll</HintPath>
     </Reference>
-    <Reference Include="JToolbox.Misc.TopshelfUtils">
-      <HintPath>..\Libraries\JToolbox.Misc.TopshelfUtils.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.HashCode">
       <HintPath>..\Libraries\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ServiceScripts\continue.bat">
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ServiceScripts\install.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ServiceScripts\pause.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ServiceScripts\start.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ServiceScripts\stop.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ServiceScripts\uninstall.bat">
+    <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

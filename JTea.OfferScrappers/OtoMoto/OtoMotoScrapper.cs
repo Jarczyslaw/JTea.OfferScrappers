@@ -172,7 +172,8 @@ namespace JTea.OfferScrappers.OtoMoto
         private void SetSpecification(OtoMotoOffer offer, HtmlNode linkDivNode)
         {
             HtmlNode specificationNode = linkDivNode
-                .Element("p");
+                .Elements("p")
+                ?.ElementAtOrDefault(1);
 
             CheckNodeExists(specificationNode, nameof(specificationNode));
 
